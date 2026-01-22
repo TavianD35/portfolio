@@ -7,13 +7,13 @@ Last Updated: 01/20/2026
 
 html, body, #root {
   width: 100%;
-  height: 100%; /* This tells the app to fill the vertical height */
+  height: 100%;
   margin: 0;
   padding: 0;
-  background-color: #111; /* Matches your dark mode */
-  overflow: hidden; /* Removes scrollbars */
+  background-color: #111;
+  overflow: hidden;
 }
 
 canvas {
-  display: block; /* Removes tiny white gaps */
+  display: block;
 }

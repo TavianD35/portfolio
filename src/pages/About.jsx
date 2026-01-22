@@ -1,4 +1,9 @@
-import React from 'react'
+{/*
+Filename: About.jsx
+Author: Tavian Dodd
+Date Created: 01/21/2026
+Last Updated: 01/21/2026
+*/}
 
 const About = () => {
   return (
@@ -12,7 +17,7 @@ const About = () => {
       fontFamily: 'Arial, sans-serif'
     }}>
       
-      {/* HEADER SECTION */}
+      {/* header section */}
       <div style={{ maxWidth: '800px', margin: '0 auto' }}>
         <h1 style={{ fontSize: '4rem', fontWeight: 'bold', color: '#fff', marginBottom: '10px' }}>
           Hello, I'm <span style={{ color: '#4d4dff' }}>Tavian.</span>
@@ -21,10 +26,10 @@ const About = () => {
           Simulation Engineer // Coding Enthusiast // Problem Solver
         </h2>
 
-        {/* CONTENT GRID */}
+        {/* content grid */}
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '40px' }}>
           
-          {/* Left Column: Text */}
+          {/* left column text */}
           <div>
             <p style={{ lineHeight: '1.6', fontSize: '1.1rem', marginBottom: '20px' }}>
               I am a graduate from Tennessee Technological University with a B.S. in Computer Science.
@@ -41,7 +46,7 @@ const About = () => {
                 Simulation: Emulate3D <br />
             </p>
             
-            {/* A Cool React Button */}
+            {/* download resume button */}
             <button style={{
               marginTop: '30px',
               padding: '15px 30px',
@@ -57,7 +62,7 @@ const About = () => {
             </button>
           </div>
 
-          {/* Right Column: Visual (Placeholder for now) */}
+          {/* right column visual (may replace later) */}
           <div style={{
             background: '#222',
             borderRadius: '15px',
