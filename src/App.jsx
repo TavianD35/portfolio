@@ -5,6 +5,8 @@ Date Created: 01/15/2026
 Last Updated: 01/20/2026
 */}
 
+import { Routes, Route } from 'react-router-dom'
+import About from './pages/About'
 import { useState, useRef, useEffect } from 'react'
 import { Canvas } from '@react-three/fiber'
 import { Environment, SpotLight, CameraControls } from '@react-three/drei'
@@ -18,7 +20,6 @@ const sittingTarget = [0, 0.85, 0]
 function Controls({ isSitting }) {
   const controls = useRef()
 
-  // Toggle Animation
   useEffect(() => {
     if (controls.current) {
       if (isSitting) {
@@ -29,13 +30,12 @@ function Controls({ isSitting }) {
     }
   }, [isSitting])
 
-  // Initial Snap
   useEffect(() => {
     const timer = setTimeout(() => {
       if (controls.current) {
         controls.current.setLookAt(...standingPos, ...standingTarget, false)
       }
-    }, 25)
+    }, 0)
     return () => clearTimeout(timer)
   }, [])
 
@@ -50,7 +50,7 @@ function Controls({ isSitting }) {
   )
 }
 
-export default function App() {
+function Home3D() {
   const [isSitting, setIsSitting] = useState(false)
 
   return (
@@ -58,10 +58,18 @@ export default function App() {
 
       <div style={{position: 'absolute', top: 20, left: 20, zIndex: 10}}>
         <button
-          // Click Handler
           onClick={() => setIsSitting(!isSitting)} 
-          style={{padding: '10px 20px', fontSize: '1.2rem', cursor: 'pointer'}}
-        >
+          style={{
+            padding: '10px 20px', 
+            background: '#4d4dff',
+            color: 'white',
+            border: 'none',
+            borderRadius: '5px',
+            fontWeight: 'bold',
+            cursor: 'pointer',
+            fontSize: '1rem'
+          }}>
+
           {isSitting ? "Back To Room" : "View Work"}
         </button>
       </div>
@@ -102,6 +110,15 @@ export default function App() {
         
       </Canvas>
     </div>
+  )
+}
+
+export default function App() {
+  return (
+    <Routes>
+      <Route path="/" element={<Home3D />} />
+      <Route path="/about" element={<About />} />
+    </Routes>
   )
 }
 
