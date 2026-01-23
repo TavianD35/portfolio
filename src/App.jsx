@@ -7,12 +7,13 @@ Last Updated: 01/20/2026
 
 import { Routes, Route } from 'react-router-dom'
 import About from './pages/About'
+import { SimulationLoader } from './SimulationLoader'
 import { useState, useRef, useEffect } from 'react'
 import { Canvas } from '@react-three/fiber'
 import { Environment, SpotLight, CameraControls } from '@react-three/drei'
 import { Model } from './Room'
 
-const standingPos = [1.7, 1.75, 2.4]
+const standingPos = [1.625, 1.8, 2]
 const standingTarget = [0.25, 1, 0]
 const sittingPos = [1.1, 1.1, 0]
 const sittingTarget = [0, 0.85, 0]
@@ -54,6 +55,7 @@ function Home3D() {
   const [isSitting, setIsSitting] = useState(false)
 
   return (
+    <>
     <div style={{ width: "100vw", height: "100vh", background: "#111" }}>
 
       <div style={{position: 'absolute', top: 20, left: 20, zIndex: 10}}>
@@ -110,6 +112,9 @@ function Home3D() {
         
       </Canvas>
     </div>
+
+    <SimulationLoader />
+    </>
   )
 }
 
