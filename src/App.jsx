@@ -8,9 +8,9 @@ Last Updated: 01/20/2026
 import { Routes, Route } from 'react-router-dom'
 import About from './pages/About'
 import { SimulationLoader } from './SimulationLoader'
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef, useEffect, Suspense } from 'react'
 import { Canvas } from '@react-three/fiber'
-import { Environment, SpotLight, CameraControls } from '@react-three/drei'
+import { Environment, SpotLight, CameraControls, useCursor } from '@react-three/drei'
 import { Model } from './Room'
 
 const standingPos = [1.625, 1.8, 2]
@@ -18,9 +18,25 @@ const standingTarget = [0.25, 1, 0]
 const sittingPos = [1.1, 1.1, 0]
 const sittingTarget = [0, 0.85, 0]
 
-function Controls({ isSitting }) {
-  const controls = useRef()
+function MonitorHitbox({ position, rotation, onClick }) {
+  const [hovered, setHovered] = useState(false)
+  useCursor(hovered)
+  return (
+    <mesh 
+      position={position} 
+      rotation={rotation || [0, 0, 0]} 
+      visible={true} 
+      onClick={(e) => { e.stopPropagation(); onClick() }}
+      onPointerOver={() => setHovered(true)}
+      onPointerOut={() => setHovered(false)}
+    >
+      <boxGeometry args={[0.5, 0.32, 0.01]} />
+      <meshBasicMaterial color="red" wireframe />
+    </mesh>
+  )
+}
 
+function Controls({ isSitting, controls }) {
   useEffect(() => {
     if (controls.current) {
       if (isSitting) {
@@ -29,7 +45,7 @@ function Controls({ isSitting }) {
         controls.current.setLookAt(...standingPos, ...standingTarget, true)
       }
     }
-  }, [isSitting])
+  }, [isSitting, controls])
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -53,31 +69,63 @@ function Controls({ isSitting }) {
 
 function Home3D() {
   const [isSitting, setIsSitting] = useState(false)
+  const [monitorContent, setMonitorContent] = useState(null)
+  const [transitionState, setTransitionState] = useState('idle') 
+  
+  const controls = useRef()
+
+  const handleMonitorClick = (content) => {
+    if (controls.current) {
+      controls.current.dolly(1, true) 
+    }
+
+    setTransitionState('fading-out')
+    
+    setTimeout(() => {
+      setMonitorContent(content)
+      setTransitionState('fading-in')
+      setTimeout(() => setTransitionState('idle'), 500)
+    }, 300)
+  }
+
+  const handleCloseMonitor = () => {
+    setTransitionState('fading-out')
+    
+    setTimeout(() => {
+      setMonitorContent(null)
+      
+      if (controls.current) {
+        controls.current.setLookAt(...sittingPos, ...sittingTarget, false)
+      }
+
+      setTransitionState('fading-in')
+      setTimeout(() => setTransitionState('idle'), 500)
+    }, 300)
+  }
 
   return (
     <>
     <div style={{ width: "100vw", height: "100vh", background: "#111" }}>
 
-      <div style={{position: 'absolute', top: 20, left: 20, zIndex: 10}}>
-        <button
-          onClick={() => setIsSitting(!isSitting)} 
-          style={{
-            padding: '10px 20px', 
-            background: '#4d4dff',
-            color: 'white',
-            border: 'none',
-            borderRadius: '5px',
-            fontWeight: 'bold',
-            cursor: 'pointer',
-            fontSize: '1rem'
-          }}>
-
-          {isSitting ? "Back To Room" : "View Work"}
-        </button>
-      </div>
+      {!monitorContent && (
+        <div style={{position: 'absolute', top: 20, left: 20, zIndex: 20}}>
+          <button
+            onClick={() => setIsSitting(!isSitting)} 
+            style={{
+              padding: '10px 20px', background: '#4d4dff', color: 'white',
+              border: 'none', borderRadius: '5px', fontWeight: 'bold', cursor: 'pointer',
+              transition: 'opacity 0.2s',
+              opacity: transitionState === 'idle' ? 1 : 0
+            }}>
+            {isSitting ? "Back To Room" : "View Work"}
+          </button>
+        </div>
+      )}
 
       <Canvas camera={{ position: standingPos, fov: 50 }}>
         
+        <Suspense fallback={null}>
+
         <ambientLight intensity={0.35} />
         <Environment preset="city" background={false} blur={1} environmentIntensity={0.2} />
 
@@ -107,10 +155,72 @@ function Home3D() {
         />
 
         <Model />
-
-        <Controls isSitting={isSitting} />
         
+        {isSitting && (
+          <>
+            <MonitorHitbox 
+              position={[0.1, 1.025, 0.475]} 
+              rotation={[0, 2.1, 0]} 
+              onClick={() => handleMonitorClick('left')} 
+            />
+
+            <MonitorHitbox 
+              position={[-0.025, 1.025, 0]} 
+              rotation={[0, 1.6, 0]} 
+              onClick={() => handleMonitorClick('center')} 
+            />
+
+            <MonitorHitbox 
+              position={[0.1, 1.025, -0.475]} 
+              rotation={[0, -2.1, 0]} 
+              onClick={() => handleMonitorClick('right')} 
+            />
+          </>
+        )}
+
+        <Controls isSitting={isSitting} controls={controls} />
+        
+        </Suspense>
+
       </Canvas>
+
+      <div style={{
+        position: 'absolute', top: 0, left: 0, width: '100%', height: '100%',
+        background: '#000',
+        opacity: transitionState === 'fading-out' ? 1 : 0, 
+        pointerEvents: 'none',
+        transition: 'opacity 0.3s ease-in-out', 
+        zIndex: 50
+      }} />
+
+      {monitorContent && (
+        <div style={{
+          position: 'absolute', top: 0, left: 0, width: '100%', height: '100%',
+          background: 'rgba(15, 15, 20, 0.96)', 
+          display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center',
+          zIndex: 40,
+          opacity: transitionState === 'fading-in' || transitionState === 'idle' ? 1 : 0,
+          transition: 'opacity 0.5s ease'
+        }}>
+           <button
+             onClick={handleCloseMonitor}
+             style={{
+               position: 'absolute', bottom: 40,
+               padding: '12px 30px', background: 'white', color: 'black',
+               border: 'none', borderRadius: '30px', fontWeight: 'bold', cursor: 'pointer',
+               boxShadow: '0 4px 15px rgba(255,255,255,0.2)'
+             }}>
+             Close Monitor
+           </button>
+
+           <div style={{color: 'white', textAlign: 'center'}}>
+             {monitorContent === 'left' && <img src="/portfolio-screen.png" style={{maxHeight: '80vh', maxWidth:'90%'}} />}
+             {monitorContent === 'center' && <h1>About Me</h1>}
+             {monitorContent === 'right' && <h1>Contact</h1>}
+           </div>
+        </div>
+      )}
+
     </div>
 
     <SimulationLoader />
