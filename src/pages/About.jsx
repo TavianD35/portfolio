@@ -5,20 +5,30 @@ Date Created: 01/21/2026
 Last Updated: 01/21/2026
 */}
 
+import WireframeTerrain from "../components/WireframeTerrain";
+
 const About = () => {
   return (
-
     <div style={{
+      position: 'relative',
       width: '100vw',
       minHeight: '100vh',
       background: '#111',
       color: '#eee',
       padding: '50px',
-      fontFamily: 'Arial, sans-serif'
+      fontFamily: 'Arial, sans-serif',
+      overflow: 'hidden' 
     }}>
+
+      <WireframeTerrain />
       
       {/* header section */}
-      <div style={{ maxWidth: '800px', margin: '0 auto' }}>
+      <div style={{ 
+          position: 'relative', 
+          zIndex: 10,          
+          maxWidth: '800px', 
+          margin: '0 auto' 
+      }}>
         <h1 style={{ fontSize: '4rem', fontWeight: 'bold', color: '#fff', marginBottom: '10px' }}>
           Hello, I'm <span style={{ color: '#4d4dff' }}>Tavian.</span>
         </h1>
