@@ -13,12 +13,20 @@ export function Model(props) {
   const { nodes, materials } = useGLTF('/models/RoomV3.glb')
 
   // load about screen
-  const screenTexture = useTexture('/images/AboutPageScreenshot.png')
-  screenTexture.flipY = false 
-  screenTexture.toneMapped = false 
-  screenTexture.anisotropy = 16 
-  screenTexture.minFilter = THREE.LinearFilter
-  screenTexture.magFilter = THREE.LinearFilter
+  const aboutScreenTexture = useTexture('/images/AboutPageScreenshot.png')
+  aboutScreenTexture.flipY = false 
+  aboutScreenTexture.toneMapped = false 
+  aboutScreenTexture.anisotropy = 16 
+  aboutScreenTexture.minFilter = THREE.LinearFilter
+  aboutScreenTexture.magFilter = THREE.LinearFilter
+
+  // load projects screen
+  const projectsScreenTexture = useTexture('/images/ProjectsPageScreenshot.png')
+  projectsScreenTexture.flipY = false 
+  projectsScreenTexture.toneMapped = false 
+  projectsScreenTexture.anisotropy = 16 
+  projectsScreenTexture.minFilter = THREE.LinearFilter
+  projectsScreenTexture.magFilter = THREE.LinearFilter
 
   return (
     <group {...props} dispose={null}>
@@ -64,11 +72,19 @@ export function Model(props) {
           geometry={nodes.MonitorLeftScreen.geometry} 
           position={[-0.22, 0, -0.874]}
         >
-          <meshBasicMaterial map={screenTexture} toneMapped={false} />
+          <meshBasicMaterial map={aboutScreenTexture} toneMapped={false} />
         </mesh>   
 
         <mesh geometry={nodes.MonitorMiddle.geometry} material={materials.Plastic_Frame} position={[-0.22, 0, -0.874]} />
-        <mesh geometry={nodes.MonitorMiddleScreen.geometry} material={materials.Screen_Placeholder_Middle} position={[-0.22, 0, -0.874]} />
+
+        {/* center monitor screen for screenshot */}
+        <mesh 
+          geometry={nodes.MonitorMiddleScreen.geometry} 
+          position={[-0.22, 0, -0.874]}
+        >
+          <meshBasicMaterial map={projectsScreenTexture} toneMapped={false} />
+        </mesh>
+
         <mesh geometry={nodes.MonitorRight.geometry} material={materials.Plastic_Frame} position={[-0.22, 0, -0.874]} />
         <mesh geometry={nodes.MonitorRightScreen.geometry} material={materials.Screen_Placeholder_Right} position={[-0.22, 0, -0.874]} />
         <mesh geometry={nodes.Mousepad.geometry} material={materials['Material.001']} position={[-0.22, 0, -0.874]} />

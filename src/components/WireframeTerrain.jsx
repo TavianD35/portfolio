@@ -99,11 +99,11 @@ function TerrainPlane() {
 }
 
 export default function WireframeTerrain() {
-    return (
-        <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', zIndex: 0, background: '#050510' }}>
-            <Canvas camera={{ position: [0, 0, 5], fov: 50 }}>
-                <TerrainPlane />
-            </Canvas>
-        </div>
-    )
+  return (
+    <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', zIndex: 0, background: '#050510' }}>
+      <Canvas camera={{ position: [0, 0, 5], fov: 50 }}>
+        <TerrainPlane />
+      </Canvas>
+    </div>
+  )
 }

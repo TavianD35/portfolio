@@ -2,13 +2,13 @@
 Filename: App.jsx
 Author: Tavian Dodd
 Date Created: 01/15/2026
-Last Updated: 01/20/2026
+Last Updated: 01/26/2026
 */}
 
+import CustomCursor from './components/CustomCursor'
 import { Routes, Route } from 'react-router-dom'
 import About from './pages/About'
-// import Projects from './pages/Projects' 
-// import Contact from './pages/Contact' 
+import Projects from './pages/Projects' 
 import { SimulationLoader } from './SimulationLoader'
 import { useState, useRef, useEffect, Suspense } from 'react'
 import { Canvas } from '@react-three/fiber'
@@ -75,6 +75,10 @@ function Home3D() {
   const [transitionState, setTransitionState] = useState('idle') 
   
   const controls = useRef()
+
+  // helper to check if we are viewing the projects monitor
+  // used to switch layout modes between "text box" (about) and "full screen" (projects)
+  const isFullWidth = monitorContent === 'center'
 
   const handleMonitorClick = (content, tx, ty, tz, cx, cy, cz) => {
     if (controls.current) {
@@ -179,7 +183,8 @@ function Home3D() {
           position: 'absolute', top: 0, left: 0, width: '100vw', height: '100vh',
           background: 'rgba(15, 15, 20, 0.96)', 
           zIndex: 40,
-          overflowY: 'auto', 
+          // if viewing projects (isFullWidth), hide scroll here
+          overflowY: isFullWidth ? 'hidden' : 'auto', 
           overflowX: 'hidden',
           display: 'flex',
           flexDirection: 'column',
@@ -190,15 +195,18 @@ function Home3D() {
            <div style={{ 
              position: 'sticky', top: 0, width: '100%', 
              display: 'flex', justifyContent: 'center', 
-             padding: '20px 0', background: 'rgba(15, 15, 20, 0.9)',
-             zIndex: 100 
+             padding: '20px 0', 
+             background: isFullWidth ? 'transparent' : 'rgba(15, 15, 20, 0.9)',
+             zIndex: 100,
+             pointerEvents: 'none'
            }}>
              <button
                onClick={handleCloseMonitor}
                style={{
                  padding: '12px 30px', background: 'white', color: 'black',
                  border: 'none', borderRadius: '30px', fontWeight: 'bold', cursor: 'pointer',
-                 boxShadow: '0 4px 15px rgba(255,255,255,0.2)'
+                 boxShadow: '0 4px 15px rgba(255,255,255,0.2)',
+                 pointerEvents: 'auto'
                }}>
                Close Monitor
              </button>
@@ -206,10 +214,12 @@ function Home3D() {
 
            {/* page content wrapper */}
            <div style={{ 
-             width: 'fit-content', 
-             maxWidth: '1000px', 
+             width: isFullWidth ? '100vw' : 'fit-content', 
+             maxWidth: isFullWidth ? 'none' : '1000px', 
              margin: '0 auto',
-             padding: '0 20px 50px 20px',
+             padding: isFullWidth ? '0' : '0 20px 50px 20px',
+             // force full height for projects
+             height: isFullWidth ? '100vh' : 'auto',
              display: 'flex',
              flexDirection: 'column',
              alignItems: 'center'
@@ -217,12 +227,7 @@ function Home3D() {
              
              {monitorContent === 'left' && <About />}
 
-             {monitorContent === 'center' && (
-                <div style={{color: 'white', textAlign: 'center', marginTop: '50px'}}>
-                   <h1>My Projects</h1>
-                   <p>Projects Component Coming Soon</p>
-                </div>
-             )}
+             {monitorContent === 'center' && <Projects />}
 
              {monitorContent === 'right' && (
                 <div style={{color: 'white', textAlign: 'center', marginTop: '50px'}}>
@@ -244,10 +249,17 @@ function Home3D() {
 
 export default function App() {
   return (
-    <Routes>
-      <Route path="/" element={<Home3D />} />
-      <Route path="/about" element={<About />} />
-    </Routes>
+    <>
+      <CustomCursor />
+      <Routes>
+        {/* 3D home page */}
+        <Route path="/" element={<Home3D />} /> 
+        
+        {/* page routes */}
+        <Route path="/projects" element={<Projects />} />
+        <Route path="/about" element={<About />} />
+      </Routes>
+    </>
   )
 }
 
