@@ -8,7 +8,7 @@ Last Updated: 01/22/2026
 import { useProgress } from '@react-three/drei'
 import { useState, useEffect } from 'react'
 
-export function SimulationLoader() {
+export function SimulationLoader({ showRotateHint }) {
   const { progress: activeProgress } = useProgress()
   const [percent, setPercent] = useState(0)
   const [dots, setDots] = useState('')
@@ -59,16 +59,22 @@ export function SimulationLoader() {
 
   return (
     <div style={{
-      position: 'absolute', top: 0, left: 0, width: '100%', height: '100%',
+      // use fixed/inset to lock it to the screen (prevents scroll/zoom issues)
+      position: 'fixed', inset: 0,
       background: '#111', color: '#fff',
       fontFamily: 'monospace',
       display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center',
       zIndex: 9999
     }}>
       
-      <div style={{ width: '600px', textAlign: 'left' }}>
+      <div style={{ 
+        width: '100%', 
+        maxWidth: '600px', 
+        padding: '0 20px',
+        textAlign: 'left',
+        boxSizing: 'border-box'
+      }}>
         <p style={{ margin: 0 }}>
-            {/* [SYSTEM] style */}
             <span style={{ 
             color: '#4d4dff', 
             fontSize: '1rem',
@@ -101,9 +107,11 @@ export function SimulationLoader() {
         }}/>
         </div>
 
-        <p style={{ margin: '5px 0 0 0', fontSize: '1.0rem', opacity: 0.7 }}>
-          {percent.toFixed(0)}% COMPLETE
-        </p>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginTop: '5px' }}>
+            <p style={{ margin: 0, fontSize: '1.0rem', opacity: 0.7 }}>
+            {percent.toFixed(0)}% COMPLETE
+            </p>
+        </div>
       </div>
     </div>
   )

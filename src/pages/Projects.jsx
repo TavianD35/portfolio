@@ -10,89 +10,127 @@ import ProjectSection from '../components/ProjectSection'
 
 export default function Projects() {
   return (
-    <div style={{ 
-      width: '100vw', 
-      height: '100vh', 
-      background: '#050505', 
-      color: 'white',
-      overflowY: 'scroll',       
-      scrollSnapType: 'y mandatory', 
-      scrollBehavior: 'smooth'
-    }}>
-      
-      {/* 3d background */}
-      <div style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', zIndex: 0 }}>
-        <FloatingTech />
-      </div>
+    <>
+      <style>
+        {`
+          .no-scrollbar::-webkit-scrollbar {
+            display: none;
+          }
+          .no-scrollbar {
+            -ms-overflow-style: none;  
+            scrollbar-width: none;     
+          }
+          * {
+            box-sizing: border-box;
+          }
+        `}
+      </style>
 
-      {/* scrollable content */}
-      <div style={{ position: 'relative', zIndex: 10 }}>
+      <div 
+        style={{ 
+          width: '100%', 
+          height: '100vh', 
+          background: '#050505', 
+          position: 'relative',
+          overflow: 'hidden'
+      }}>
         
-        {/* section 1: intro */}
-        <div style={{
-           height: '100vh', 
-           width: '100%',
-           scrollSnapAlign: 'start', 
-           display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center',
-           background: 'transparent' 
-        }}>
-           <h1 style={{ fontSize: '6vw', margin: 0, lineHeight: 0.9, textAlign: 'center' }}>
-             PLACE <br /> 
-             <span style={{ color: '#4d4dff' }}>HOLDER</span>
-           </h1>
-           <div style={{ marginTop: '50px', fontSize: '1.5rem', opacity: 0.5 }}>
-             ↓
-           </div>
+        {/* 3d background */}
+        <div style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', zIndex: 0 }}>
+          <FloatingTech />
         </div>
 
-        {/* section 2: simulation? */}
-        <ProjectSection 
-          title=""
-          stack=""
-          description=""
-          image=""
-          align="left"
-          background="#0a192f" 
-        />
+        <div 
+            className="no-scrollbar"
+            style={{ 
+                position: 'absolute', top: 0, left: 0, 
+                width: '100%', height: '100%', 
+                zIndex: 10, 
+                overflowY: 'scroll', 
+                overflowX: 'hidden', 
+                overscrollBehavior: 'none',
+                scrollSnapType: 'y mandatory', 
+                scrollBehavior: 'smooth'
+            }}
+        >
+          
+          {/* section 1: intro */}
+          <div style={{
+            position: 'sticky', top: 0,
+            height: '100vh', 
+            width: '100%',
+            scrollSnapAlign: 'start', 
+            display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center',
+            background: 'transparent',
+            zIndex: 0 
+          }}>
+            <h1 style={{ fontSize: '6vw', margin: 0, lineHeight: 0.9, textAlign: 'center' }}>
+              PLACE <br /> 
+              <span style={{ color: '#4d4dff' }}>HOLDER</span>
+            </h1>
+            <div style={{ marginTop: '50px', fontSize: '1.5rem', opacity: 0.5 }}>
+              ↓
+            </div>
+          </div>
 
-        {/* section 3: portfolio? */}
-        <ProjectSection 
-          title=""
-          stack=""
-          description=""
-          image=""
-          align="right"
-          background="#161616" 
-        />
+          {/* section 2: simulation? */}
+          <div style={{ scrollSnapAlign: 'start' }}>
+            <ProjectSection 
+                title=""
+                stack=""
+                description=""
+                image=""
+                align="left"
+                background="#0a192f" 
+            />
+          </div>
 
-        {/* section 4: ? */}
-        <ProjectSection 
-          title=""
-          stack=""
-          description=""
-          image=""
-          align="left"
-          background="#1a1125" 
-        />
+          {/* section 3: portfolio? */}
+          <div style={{ scrollSnapAlign: 'start' }}>
+            <ProjectSection 
+                title=""
+                stack=""
+                description=""
+                image=""
+                align="right"
+                background="#161616" 
+            />
+          </div>
 
-        {/* section 5: footer */}
-        <div style={{
-           height: '50vh', 
-           scrollSnapAlign: 'start', 
-           display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center',
-           background: '#000000',
-           borderTop: '1px solid #333'
-        }}>
-           <h2 style={{ fontSize: '3rem' }}>Temp Text</h2>
-           <button style={{ 
-               padding: '15px 40px', fontSize: '1.2rem', background: '#4d4dff', 
-               color: 'white', border: 'none', borderRadius: '5px', marginTop: '20px', cursor: 'pointer' 
-           }}>
-             Contact Me?
-           </button>
+          {/* section 4: ? */}
+          <div style={{ scrollSnapAlign: 'start' }}>
+            <ProjectSection 
+                title=""
+                stack=""
+                description=""
+                image=""
+                align="left"
+                background="#1a1125" 
+            />
+          </div>
+
+          {/* section 5: footer */}
+          <div style={{
+            position: 'relative', 
+            zIndex: 10,          
+            height: '50vh', 
+            scrollSnapAlign: 'start', 
+            display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center',
+            background: '#000000',
+            borderTop: '1px solid #333',
+            boxShadow: '0 -50px 100px rgba(0,0,0,0.8)'
+          }}>
+            <h2 style={{ fontSize: '3rem' }}>Temp Text</h2>
+            <button style={{ 
+                padding: '15px 40px', fontSize: '1.2rem', background: '#4d4dff', 
+                color: 'white', border: 'none', borderRadius: '5px', marginTop: '20px', cursor: 'pointer' 
+            }}>
+              Contact Me?
+            </button>
+          </div>
+
         </div>
-
       </div>
-    </div>
+    </>
   )
 }

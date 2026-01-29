@@ -15,10 +15,11 @@ export default function ProjectSection({ title, stack, description, image, align
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        position: 'relative',
+        position: 'sticky',
         padding: '0 5vw',
         background: background, 
-        boxShadow: background !== 'transparent' ? '0 -50px 100px rgba(0,0,0,0.5)' : 'none'
+        boxShadow: background !== 'transparent' ? '0 -50px 100px rgba(0,0,0,0.7)' : 'none',
+        zIndex: 1
       }}
     >
       <div style={{
@@ -28,7 +29,7 @@ export default function ProjectSection({ title, stack, description, image, align
         maxWidth: '1200px',
         width: '100%',
         alignItems: 'center',
-        zIndex: 2 
+        //zIndex: 2 
       }}>
         
         {/* text side */}

@@ -15,10 +15,48 @@ import { Canvas } from '@react-three/fiber'
 import { Environment, SpotLight, CameraControls, useCursor } from '@react-three/drei'
 import { Model } from './RoomV3'
 
-const standingPos = [1.625, 1.8, 2]
+// constants
+const desktopStandingPos = [1.625, 1.8, 2]
+const mobileStandingPos = [1.6, 2.0, 3.8] 
+
+const desktopSittingPos = [1.1, 1.1, 0]
+const mobileSittingPos = [2.8, 1.2, 0] 
+
 const standingTarget = [0.25, 1, 0]
-const sittingPos = [1.1, 1.1, 0]
 const sittingTarget = [0, 0.85, 0]
+
+// rotate prompt component
+function RotatePrompt() {
+  return (
+    <div style={{
+      position: 'fixed', top: 0, left: 0, width: '100%', height: '100%',
+      background: '#111', 
+      zIndex: 9000,
+      display: 'flex', flexDirection: 'column', 
+      justifyContent: 'center', alignItems: 'center',
+      color: 'white', textAlign: 'center', padding: '20px'
+    }}>
+      <div style={{ 
+        fontSize: '40px', marginBottom: '20px', 
+        animation: 'spin 2s infinite ease-in-out' 
+      }}>
+        📱↻
+      </div>
+      <h2 style={{ marginBottom: '10px' }}>Please Rotate Device</h2>
+      <p style={{ color: '#aaa', maxWidth: '300px' }}>
+        This portfolio is designed for landscape mode.
+      </p>
+      <style>{`
+        @keyframes spin {
+          0% { transform: rotate(0deg); }
+          25% { transform: rotate(90deg); }
+          50% { transform: rotate(90deg); }
+          100% { transform: rotate(0deg); }
+        }
+      `}</style>
+    </div>
+  )
+}
 
 function MonitorHitbox({ position, rotation, onClick }) {
   const [hovered, setHovered] = useState(false)
@@ -38,25 +76,25 @@ function MonitorHitbox({ position, rotation, onClick }) {
   )
 }
 
-function Controls({ isSitting, controls }) {
+function Controls({ isSitting, controls, currentStandingPos, currentSittingPos }) {
   useEffect(() => {
     if (controls.current) {
       if (isSitting) {
-        controls.current.setLookAt(...sittingPos, ...sittingTarget, true)
+        controls.current.setLookAt(...currentSittingPos, ...sittingTarget, true)
       } else {
-        controls.current.setLookAt(...standingPos, ...standingTarget, true)
+        controls.current.setLookAt(...currentStandingPos, ...standingTarget, true)
       }
     }
-  }, [isSitting, controls])
+  }, [isSitting, controls, currentStandingPos, currentSittingPos])
 
   useEffect(() => {
     const timer = setTimeout(() => {
       if (controls.current) {
-        controls.current.setLookAt(...standingPos, ...standingTarget, false)
+        controls.current.setLookAt(...currentStandingPos, ...standingTarget, false)
       }
     }, 0)
     return () => clearTimeout(timer)
-  }, [])
+  }, [currentStandingPos])
 
   return (
     <CameraControls 
@@ -74,10 +112,31 @@ function Home3D() {
   const [monitorContent, setMonitorContent] = useState(null)
   const [transitionState, setTransitionState] = useState('idle') 
   
+  // mobile detection
+  const [isMobile, setIsMobile] = useState(false)
+  const [isPortrait, setIsPortrait] = useState(false)
+  
   const controls = useRef()
 
-  // helper to check if we are viewing the projects monitor
-  // used to switch layout modes between "text box" (about) and "full screen" (projects)
+  useEffect(() => {
+    const handleResize = () => {
+      // check if devioce is touch capable
+      const isTouch = window.matchMedia("(pointer: coarse)").matches
+      // check width for mobile
+      const mobileWidth = window.innerWidth < 1024
+      
+      setIsMobile(isTouch && mobileWidth)
+      setIsPortrait(window.innerHeight > window.innerWidth)
+    }
+    
+    handleResize()
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
+
+  const currentStandingPos = isMobile ? mobileStandingPos : desktopStandingPos
+  const currentSittingPos = isMobile ? mobileSittingPos : desktopSittingPos
+
   const isFullWidth = monitorContent === 'center'
 
   const handleMonitorClick = (content, tx, ty, tz, cx, cy, cz) => {
@@ -104,7 +163,7 @@ function Home3D() {
       setMonitorContent(null)
       
       if (controls.current) {
-        controls.current.setLookAt(...sittingPos, ...sittingTarget, true)
+        controls.current.setLookAt(...currentSittingPos, ...sittingTarget, true)
       }
 
       setTransitionState('fading-in')
@@ -115,6 +174,9 @@ function Home3D() {
   return (
     <>
     <div style={{ width: "100vw", height: "100vh", background: "#111", overflow: 'hidden' }}>
+
+      {/* rotate prompt which is rendered conditionally */}
+      {isMobile && isPortrait && <RotatePrompt />}
 
       {!monitorContent && (
         <div style={{position: 'absolute', top: 20, left: 20, zIndex: 20}}>
@@ -131,30 +193,27 @@ function Home3D() {
         </div>
       )}
 
-      <Canvas camera={{ position: standingPos, fov: 50 }}>
+      <Canvas camera={{ position: currentStandingPos, fov: 50 }}>
         <Suspense fallback={null}>
           <ambientLight intensity={0.35} />
           <Environment preset="city" background={false} blur={1} environmentIntensity={0.2} />
           <rectAreaLight width={10} height={10} position={[0, 5, -5]} intensity={5} color="#2c2c54" lookAt={[0, 0, 0]} />
-          <SpotLight position={[3, 4, 2]} angle={0.5} penumbra={0.5} intensity={2} castShadow color="#e0e0ff" />
+          <SpotLight position={[3, 4, 2]} angle={0.5} penumbra={0.5} intensity={2} castShadow={!isMobile} color="#e0e0ff" />
           <SpotLight position={[-2, 3, -2]} intensity={3} color="blue" angle={0.5} />
           <Model />
           
           {isSitting && (
             <>
-              {/* left monitor */}
               <MonitorHitbox 
                 position={[0.1, 1.025, 0.475]} 
                 rotation={[0, 2.1, 0]} 
                 onClick={() => handleMonitorClick('left', 0.1, 1.025, 0.475, 0.55, 1.025, 0.2)} 
               />
-              {/* center monitor */}
               <MonitorHitbox 
                 position={[-0.025, 1.025, 0]} 
                 rotation={[0, 1.6, 0]} 
                 onClick={() => handleMonitorClick('center', -0.025, 1.025, 0, 0.6, 1.025, 0)} 
               />
-              {/* right monitor */}
               <MonitorHitbox 
                 position={[0.1, 1.025, -0.475]} 
                 rotation={[0, -2.1, 0]} 
@@ -163,11 +222,15 @@ function Home3D() {
             </>
           )}
 
-          <Controls isSitting={isSitting} controls={controls} />
+          <Controls 
+            isSitting={isSitting} 
+            controls={controls} 
+            currentStandingPos={currentStandingPos} 
+            currentSittingPos={currentSittingPos} 
+          />
         </Suspense>
       </Canvas>
 
-      {/* black curtain transition */}
       <div style={{
         position: 'absolute', top: 0, left: 0, width: '100%', height: '100%',
         background: '#000',
@@ -177,28 +240,27 @@ function Home3D() {
         zIndex: 50
       }} />
 
-      {/* content overlay */}
       {monitorContent && (
         <div style={{
-          position: 'absolute', top: 0, left: 0, width: '100vw', height: '100vh',
+          position: 'fixed', 
+          inset: 0,
           background: 'rgba(15, 15, 20, 0.96)', 
           zIndex: 40,
-          // if viewing projects (isFullWidth), hide scroll here
-          overflowY: isFullWidth ? 'hidden' : 'auto', 
+          overflowY: 'auto', 
           overflowX: 'hidden',
           display: 'flex',
           flexDirection: 'column',
-          alignItems: 'center'
+          alignItems: 'center',
+          paddingBottom: '80px' 
         }}>
            
-           {/* close button */}
            <div style={{ 
              position: 'sticky', top: 0, width: '100%', 
              display: 'flex', justifyContent: 'center', 
              padding: '20px 0', 
-             background: isFullWidth ? 'transparent' : 'rgba(15, 15, 20, 0.9)',
+             background: 'rgba(15, 15, 20, 0.8)',
+             backdropFilter: 'blur(5px)',
              zIndex: 100,
-             pointerEvents: 'none'
            }}>
              <button
                onClick={handleCloseMonitor}
@@ -206,20 +268,16 @@ function Home3D() {
                  padding: '12px 30px', background: 'white', color: 'black',
                  border: 'none', borderRadius: '30px', fontWeight: 'bold', cursor: 'pointer',
                  boxShadow: '0 4px 15px rgba(255,255,255,0.2)',
-                 pointerEvents: 'auto'
                }}>
                Close Monitor
              </button>
            </div>
 
-           {/* page content wrapper */}
            <div style={{ 
-             width: isFullWidth ? '100vw' : 'fit-content', 
+             width: '100%', 
              maxWidth: isFullWidth ? 'none' : '1000px', 
              margin: '0 auto',
-             padding: isFullWidth ? '0' : '0 20px 50px 20px',
-             // force full height for projects
-             height: isFullWidth ? '100vh' : 'auto',
+             padding: isFullWidth ? '0' : '0 20px 20px 20px',
              display: 'flex',
              flexDirection: 'column',
              alignItems: 'center'
@@ -252,10 +310,7 @@ export default function App() {
     <>
       <CustomCursor />
       <Routes>
-        {/* 3D home page */}
         <Route path="/" element={<Home3D />} /> 
-        
-        {/* page routes */}
         <Route path="/projects" element={<Projects />} />
         <Route path="/about" element={<About />} />
       </Routes>

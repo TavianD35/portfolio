@@ -10,10 +10,10 @@ import { useGLTF, useTexture } from '@react-three/drei'
 export function Model(props) {
 
   // load model
-  const { nodes, materials } = useGLTF('/models/RoomV3.glb')
+  const { nodes, materials } = useGLTF(import.meta.env.BASE_URL + 'models/RoomV3.glb')
 
   // load about screen
-  const aboutScreenTexture = useTexture('/images/AboutPageScreenshot.png')
+  const aboutScreenTexture = useTexture(import.meta.env.BASE_URL + 'images/AboutPageScreenshot.png')
   aboutScreenTexture.flipY = false 
   aboutScreenTexture.toneMapped = false 
   aboutScreenTexture.anisotropy = 16 
@@ -21,7 +21,7 @@ export function Model(props) {
   aboutScreenTexture.magFilter = THREE.LinearFilter
 
   // load projects screen
-  const projectsScreenTexture = useTexture('/images/ProjectsPageScreenshot.png')
+  const projectsScreenTexture = useTexture(import.meta.env.BASE_URL + 'images/ProjectsPageScreenshot.png')
   projectsScreenTexture.flipY = false 
   projectsScreenTexture.toneMapped = false 
   projectsScreenTexture.anisotropy = 16 
