@@ -2,7 +2,7 @@
 Filename: About.jsx
 Author: Tavian Dodd
 Date Created: 01/21/2026
-Last Updated: 01/21/2026
+Last Updated: 01/29/2026
 */}
 
 import WireframeTerrain from "../components/WireframeTerrain";
@@ -15,9 +15,10 @@ const About = () => {
       minHeight: '100vh',
       background: '#111',
       color: '#eee',
-      padding: '50px',
+      padding: '80px 50px 50px 50px', 
       fontFamily: 'Arial, sans-serif',
-      overflow: 'hidden' 
+      overflow: 'hidden',
+      boxSizing: 'border-box'
     }}>
 
       <WireframeTerrain />

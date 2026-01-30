@@ -2,13 +2,14 @@
 Filename: App.jsx
 Author: Tavian Dodd
 Date Created: 01/15/2026
-Last Updated: 01/26/2026
+Last Updated: 01/29/2026
 */}
 
 import CustomCursor from './components/CustomCursor'
 import { Routes, Route } from 'react-router-dom'
 import About from './pages/About'
 import Projects from './pages/Projects' 
+import MobilePortfolio from './components/MobilePortfolio'
 import { SimulationLoader } from './SimulationLoader'
 import { useState, useRef, useEffect, Suspense } from 'react'
 import { Canvas } from '@react-three/fiber'
@@ -107,7 +108,8 @@ function Controls({ isSitting, controls, currentStandingPos, currentSittingPos }
   )
 }
 
-function Home3D() {
+// main 3d home component
+function Home3D({ onExit }) {
   const [isSitting, setIsSitting] = useState(false)
   const [monitorContent, setMonitorContent] = useState(null)
   const [transitionState, setTransitionState] = useState('idle') 
@@ -178,17 +180,60 @@ function Home3D() {
       {/* rotate prompt which is rendered conditionally */}
       {isMobile && isPortrait && <RotatePrompt />}
 
+      {/* exit button for mobile immersive */}
+      {isMobile && !monitorContent && (
+        <div style={{position: 'absolute', top: 20, right: 20, zIndex: 20}}>
+          <button
+            onClick={onExit} 
+            style={{
+              background: 'transparent',
+              border: 'none',
+              color: 'rgba(255, 255, 255, 0.5)',
+              fontFamily: 'monospace',
+              fontSize: '1rem',
+              fontWeight: 'bold',
+              cursor: 'pointer',
+              textShadow: '0 0 5px rgba(0,0,0,0.5)'
+            }}
+          >
+            // exit_3d
+          </button>
+        </div>
+      )}
+
       {!monitorContent && (
-        <div style={{position: 'absolute', top: 20, left: 20, zIndex: 20}}>
+        <div style={{
+          position: 'absolute', 
+          top: 20, 
+          left: '50%', 
+          transform: 'translateX(-50%)', 
+          zIndex: 20
+        }}>
           <button
             onClick={() => setIsSitting(!isSitting)} 
             style={{
-              padding: '10px 20px', background: '#4d4dff', color: 'white',
-              border: 'none', borderRadius: '5px', fontWeight: 'bold', cursor: 'pointer',
-              transition: 'opacity 0.2s',
-              opacity: transitionState === 'idle' ? 1 : 0
-            }}>
-            {isSitting ? "Back To Room" : "View Work"}
+              padding: '10px 15px', 
+              background: 'transparent',
+              color: '#4d4dff',
+              border: '1px solid #4d4dff',
+              borderRadius: '5px',
+              fontFamily: 'monospace',
+              fontWeight: 'bold',
+              cursor: 'pointer',
+              transition: 'all 0.2s',
+              opacity: transitionState === 'idle' ? 1 : 0,
+              boxShadow: '0 0 10px rgba(77, 77, 255, 0.2)'
+            }}
+            onMouseEnter={(e) => {
+              e.target.style.background = 'rgba(77, 77, 255, 0.1)'
+              e.target.style.boxShadow = '0 0 15px rgba(77, 77, 255, 0.4)'
+            }}
+            onMouseLeave={(e) => {
+              e.target.style.background = 'transparent'
+              e.target.style.boxShadow = 'none'
+            }}
+          >
+            {isSitting ? "> BACK_TO_ROOM" : "> VIEW_WORK"}
           </button>
         </div>
       )}
@@ -251,33 +296,42 @@ function Home3D() {
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
-          paddingBottom: '80px' 
         }}>
            
-           <div style={{ 
-             position: 'sticky', top: 0, width: '100%', 
-             display: 'flex', justifyContent: 'center', 
-             padding: '20px 0', 
-             background: 'rgba(15, 15, 20, 0.8)',
-             backdropFilter: 'blur(5px)',
-             zIndex: 100,
-           }}>
-             <button
-               onClick={handleCloseMonitor}
-               style={{
-                 padding: '12px 30px', background: 'white', color: 'black',
-                 border: 'none', borderRadius: '30px', fontWeight: 'bold', cursor: 'pointer',
-                 boxShadow: '0 4px 15px rgba(255,255,255,0.2)',
-               }}>
-               Close Monitor
-             </button>
-           </div>
+           {/* close button */}
+           <button
+             onClick={handleCloseMonitor}
+             style={{
+               position: 'fixed',
+               top: 20,
+               right: 20,
+               zIndex: 100,
+               background: 'transparent', 
+               color: 'rgba(255, 255, 255, 0.6)',
+               border: 'none', 
+               fontFamily: 'monospace',
+               fontSize: '1.2rem',
+               fontWeight: 'bold', 
+               cursor: 'pointer',
+               textShadow: '0 0 5px rgba(0,0,0,0.8)'
+             }}
+             onMouseEnter={(e) => {
+                e.target.style.color = '#ff5555' 
+                e.target.innerText = '[ CLOSE_MONITOR ]' 
+             }}
+             onMouseLeave={(e) => {
+                e.target.style.color = 'rgba(255, 255, 255, 0.6)'
+                e.target.innerText = '// close'
+             }}
+           >
+             // close
+           </button>
 
            <div style={{ 
              width: '100%', 
              maxWidth: isFullWidth ? 'none' : '1000px', 
              margin: '0 auto',
-             padding: isFullWidth ? '0' : '0 20px 20px 20px',
+             padding: isFullWidth ? '0' : '0 20px', 
              display: 'flex',
              flexDirection: 'column',
              alignItems: 'center'
@@ -306,11 +360,29 @@ function Home3D() {
 }
 
 export default function App() {
+  const [isTouch] = useState(() => 
+    typeof window !== 'undefined' ? window.matchMedia("(pointer: coarse)").matches : false
+  )
+
+  const [immersiveMode, setImmersiveMode] = useState(false)
+  const [isMobile, setIsMobile] = useState(false)
+
+  useEffect(() => {
+    setIsMobile(window.matchMedia("(pointer: coarse)").matches && window.innerWidth <= 1024)
+  }, [])
+
+  if (isMobile && !immersiveMode) {
+    return <MobilePortfolio onEnter={() => setImmersiveMode(true)} />
+  }
+
   return (
     <>
-      <CustomCursor />
+      {!isTouch && <CustomCursor />}
+      
       <Routes>
-        <Route path="/" element={<Home3D />} /> 
+        <Route path="/" element={
+           <Home3D onExit={() => setImmersiveMode(false)} /> 
+        } /> 
         <Route path="/projects" element={<Projects />} />
         <Route path="/about" element={<About />} />
       </Routes>

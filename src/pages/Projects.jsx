@@ -2,7 +2,7 @@
 Filename: Projects.jsx
 Author: Tavian Dodd
 Date Created: 01/26/2026
-Last Updated: 01/26/2026
+Last Updated: 01/29/2026
 */}
 
 import FloatingTech from '../components/FloatingTech'
@@ -54,15 +54,16 @@ export default function Projects() {
             }}
         >
           
-          {/* section 1: intro */}
           <div style={{
-            position: 'sticky', top: 0,
+            position: 'relative', 
+            top: 0,
             height: '100vh', 
             width: '100%',
             scrollSnapAlign: 'start', 
             display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center',
             background: 'transparent',
-            zIndex: 0 
+            zIndex: 0,
+            color: 'white', 
           }}>
             <h1 style={{ fontSize: '6vw', margin: 0, lineHeight: 0.9, textAlign: 'center' }}>
               PLACE <br /> 
