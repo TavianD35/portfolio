@@ -2,7 +2,7 @@
 Filename: WireframeTerrain.jsx
 Author: Tavian Dodd
 Date Created: 01/24/2026
-Last Updated: 01/24/2026
+Last Updated: 01/30/2026
 */}
 
 import { useRef, useMemo, useEffect } from 'react' 
@@ -10,11 +10,6 @@ import { Canvas, useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
 
 const TerrainMaterial = {
-  uniforms: {
-    uTime: { value: 0 },
-    uMouse: { value: new THREE.Vector2(0, 0) },
-    uColor: { value: new THREE.Color('#00aaff') } // wireframe color
-  },
   vertexShader: `
     uniform float uTime;
     uniform vec2 uMouse;
@@ -57,7 +52,7 @@ function TerrainPlane() {
     uniforms: {
       uTime: { value: 0 },
       uMouse: { value: new THREE.Vector2(0, 0) },
-      uColor: { value: new THREE.Color('#00aaff') }
+      uColor: { value: new THREE.Color('#646577') }
     },
     vertexShader: TerrainMaterial.vertexShader,
     fragmentShader: TerrainMaterial.fragmentShader,

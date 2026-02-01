@@ -2,7 +2,7 @@
 Filename: About.jsx
 Author: Tavian Dodd
 Date Created: 01/21/2026
-Last Updated: 01/29/2026
+Last Updated: 01/30/2026
 */}
 
 import WireframeTerrain from "../components/WireframeTerrain";
@@ -57,7 +57,8 @@ const About = () => {
                 Simulation: Emulate3D <br />
             </p>
             
-            {/* download resume button */}
+            {/*
+                  Download Resume Button
             <button style={{
               marginTop: '30px',
               padding: '15px 30px',
@@ -70,20 +71,29 @@ const About = () => {
               fontSize: '1rem'
             }}>
               Download Resume
-            </button>
-          </div>
+            </button>*/}
+          </div> 
+        
 
-          {/* right column visual (may replace later) */}
+          {/* right column visual */}
           <div style={{
             background: '#222',
             borderRadius: '15px',
             height: '300px',
+            overflow: 'hidden', 
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
             border: '1px dashed #444'
           }}>
-            [ Profile Picture / 3D Avatar ]
+            <img 
+              src="/portfolio/images/SelfPortrait.jpeg" 
+              style={{
+                width: '100%',
+                height: '100%',
+                objectFit: 'cover'
+              }}
+            />
           </div>
 
         </div>

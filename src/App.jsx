@@ -17,11 +17,8 @@ import { Environment, SpotLight, CameraControls, useCursor } from '@react-three/
 import { Model } from './RoomV3'
 
 // constants
-const desktopStandingPos = [1.625, 1.8, 2]
-const mobileStandingPos = [1.6, 2.0, 3.8] 
-
-const desktopSittingPos = [1.1, 1.1, 0]
-const mobileSittingPos = [2.8, 1.2, 0] 
+const standingPos = [1.625, 1.8, 2]
+const sittingPos = [1.1, 1.1, 0]
 
 const standingTarget = [0.25, 1, 0]
 const sittingTarget = [0, 0.85, 0]
@@ -66,36 +63,22 @@ function MonitorHitbox({ position, rotation, onClick }) {
     <mesh 
       position={position} 
       rotation={rotation || [0, 0, 0]} 
-      visible={false}
       onClick={(e) => { e.stopPropagation(); onClick() }}
       onPointerOver={() => setHovered(true)}
       onPointerOut={() => setHovered(false)}
     >
       <boxGeometry args={[0.5, 0.32, 0.01]} />
-      <meshBasicMaterial color="red" wireframe />
+      <meshBasicMaterial color="red" transparent opacity={0} />
     </mesh>
   )
 }
 
-function Controls({ isSitting, controls, currentStandingPos, currentSittingPos }) {
+function Controls({ isSitting, controls, targetPos, targetLook }) {
   useEffect(() => {
     if (controls.current) {
-      if (isSitting) {
-        controls.current.setLookAt(...currentSittingPos, ...sittingTarget, true)
-      } else {
-        controls.current.setLookAt(...currentStandingPos, ...standingTarget, true)
-      }
+        controls.current.setLookAt(...targetPos, ...targetLook, true)
     }
-  }, [isSitting, controls, currentStandingPos, currentSittingPos])
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      if (controls.current) {
-        controls.current.setLookAt(...currentStandingPos, ...standingTarget, false)
-      }
-    }, 0)
-    return () => clearTimeout(timer)
-  }, [currentStandingPos])
+  }, [isSitting, controls, targetPos, targetLook])
 
   return (
     <CameraControls 
@@ -136,8 +119,8 @@ function Home3D({ onExit }) {
     return () => window.removeEventListener('resize', handleResize)
   }, [])
 
-  const currentStandingPos = isMobile ? mobileStandingPos : desktopStandingPos
-  const currentSittingPos = isMobile ? mobileSittingPos : desktopSittingPos
+  const targetPos = isSitting ? sittingPos : standingPos
+  const targetLook = isSitting ? sittingTarget : standingTarget
 
   const isFullWidth = monitorContent === 'center'
 
@@ -165,7 +148,7 @@ function Home3D({ onExit }) {
       setMonitorContent(null)
       
       if (controls.current) {
-        controls.current.setLookAt(...currentSittingPos, ...sittingTarget, true)
+        controls.current.setLookAt(...sittingPos, ...sittingTarget, true)
       }
 
       setTransitionState('fading-in')
@@ -238,14 +221,15 @@ function Home3D({ onExit }) {
         </div>
       )}
 
-      <Canvas camera={{ position: currentStandingPos, fov: 50 }}>
+      {/* use standingPos for initial camera position */}
+      <Canvas camera={{ position: standingPos, fov: 50 }}>
         <Suspense fallback={null}>
           <ambientLight intensity={0.35} />
           <Environment preset="city" background={false} blur={1} environmentIntensity={0.2} />
           <rectAreaLight width={10} height={10} position={[0, 5, -5]} intensity={5} color="#2c2c54" lookAt={[0, 0, 0]} />
           <SpotLight position={[3, 4, 2]} angle={0.5} penumbra={0.5} intensity={2} castShadow={!isMobile} color="#e0e0ff" />
           <SpotLight position={[-2, 3, -2]} intensity={3} color="blue" angle={0.5} />
-          <Model />
+          <Model isSitting={isSitting} />
           
           {isSitting && (
             <>
@@ -270,8 +254,8 @@ function Home3D({ onExit }) {
           <Controls 
             isSitting={isSitting} 
             controls={controls} 
-            currentStandingPos={currentStandingPos} 
-            currentSittingPos={currentSittingPos} 
+            targetPos={targetPos} 
+            targetLook={targetLook} 
           />
         </Suspense>
       </Canvas>
@@ -317,7 +301,7 @@ function Home3D({ onExit }) {
              }}
              onMouseEnter={(e) => {
                 e.target.style.color = '#ff5555' 
-                e.target.innerText = '[ CLOSE_MONITOR ]' 
+                e.target.innerText = '// close monitor' 
              }}
              onMouseLeave={(e) => {
                 e.target.style.color = 'rgba(255, 255, 255, 0.6)'
