@@ -2,19 +2,20 @@
 Filename: App.jsx
 Author: Tavian Dodd
 Date Created: 01/15/2026
-Last Updated: 01/29/2026
+Last Updated: 02/01/2026
 */}
 
 import CustomCursor from './components/CustomCursor'
 import { Routes, Route } from 'react-router-dom'
 import About from './pages/About'
-import Projects from './pages/Projects' 
+import Projects from './pages/Projects'
+import Contact from './pages/Contact' 
 import MobilePortfolio from './components/MobilePortfolio'
 import { SimulationLoader } from './SimulationLoader'
 import { useState, useRef, useEffect, Suspense } from 'react'
 import { Canvas } from '@react-three/fiber'
 import { Environment, SpotLight, CameraControls, useCursor } from '@react-three/drei'
-import { Model } from './RoomV3'
+import { Model } from './Room'
 
 // constants
 const standingPos = [1.625, 1.8, 2]
@@ -80,11 +81,20 @@ function Controls({ isSitting, controls, targetPos, targetLook }) {
     }
   }, [isSitting, controls, targetPos, targetLook])
 
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (controls.current) {
+        controls.current.setLookAt(...standingPos, ...standingTarget, false)
+      }
+    }, 0)
+    return () => clearTimeout(timer)
+  }, [controls])
+
   return (
     <CameraControls 
       ref={controls} 
       makeDefault 
-      smoothTime={1.5}
+      smoothTime={0.75}
       mouseButtons={{ left: 0, middle: 0, right: 0, wheel: 0 }}
       touches={{ one: 0, two: 0, three: 0 }}
     />
@@ -105,9 +115,7 @@ function Home3D({ onExit }) {
 
   useEffect(() => {
     const handleResize = () => {
-      // check if devioce is touch capable
       const isTouch = window.matchMedia("(pointer: coarse)").matches
-      // check width for mobile
       const mobileWidth = window.innerWidth < 1024
       
       setIsMobile(isTouch && mobileWidth)
@@ -221,7 +229,6 @@ function Home3D({ onExit }) {
         </div>
       )}
 
-      {/* use standingPos for initial camera position */}
       <Canvas camera={{ position: standingPos, fov: 50 }}>
         <Suspense fallback={null}>
           <ambientLight intensity={0.35} />
@@ -325,12 +332,7 @@ function Home3D({ onExit }) {
 
              {monitorContent === 'center' && <Projects />}
 
-             {monitorContent === 'right' && (
-                <div style={{color: 'white', textAlign: 'center', marginTop: '50px'}}>
-                   <h1>Contact Me</h1>
-                   <p>Contact Component Coming Soon</p>
-                </div>
-             )}
+             {monitorContent === 'right' && <Contact />}
              
            </div>
 
@@ -361,7 +363,7 @@ export default function App() {
 
   return (
     <>
-      {!isTouch && <CustomCursor />}
+      {/*!isTouch && <CustomCursor />*/}
       
       <Routes>
         <Route path="/" element={
@@ -369,6 +371,7 @@ export default function App() {
         } /> 
         <Route path="/projects" element={<Projects />} />
         <Route path="/about" element={<About />} />
+        <Route path="/contact" element={<Contact />} />
       </Routes>
     </>
   )

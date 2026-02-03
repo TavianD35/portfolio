@@ -2,12 +2,12 @@
 Filename: About.jsx
 Author: Tavian Dodd
 Date Created: 01/21/2026
-Last Updated: 01/30/2026
+Last Updated: 02/01/2026
 */}
 
 import WireframeTerrain from "../components/WireframeTerrain";
 
-const About = () => {
+export default function About() {
   return (
     <div style={{
       position: 'relative',
@@ -31,7 +31,7 @@ const About = () => {
           margin: '0 auto' 
       }}>
         <h1 style={{ fontSize: '4rem', fontWeight: 'bold', color: '#fff', marginBottom: '10px' }}>
-          Hello, I'm <span style={{ color: '#4d4dff' }}>Tavian.</span>
+          Hi, I'm <span style={{ color: '#4d4dff' }}>Tavian.</span>
         </h1>
         <h2 style={{ fontSize: '1.5rem', color: '#888', marginBottom: '40px' }}>
           Simulation Engineer // Coding Enthusiast // Problem Solver
@@ -46,7 +46,10 @@ const About = () => {
               I am a graduate from Tennessee Technological University with a B.S. in Computer Science.
             </p>
             <p style={{ lineHeight: '1.6', fontSize: '1.1rem' }}>
-              I currently hold a position as a Simulation Engineer, and I have recently reignited my passion for coding by working on personal projects.
+              I am a Simulation Engineer at ATC Automation, with a passion for coding and 3D modeling.
+              My job is to create realistic simulations of automated systems using Emulate3D, aiding my peers in 
+              visualizing, optimizing, and testing complex processes before implementation. In my free time, I enjoy 
+              developing web applications and designing 3D models.
             </p>
             <p style={{ lineHeight: '1.6', fontSize: '1.1rem' }}>
                 <span style={{fontWeight: 'bold', fontSize: '1.2rem', color: '#4d4dff' }}>
@@ -56,24 +59,7 @@ const About = () => {
                 3D Modeling: Blender, Fusion 360 <br />
                 Simulation: Emulate3D <br />
             </p>
-            
-            {/*
-                  Download Resume Button
-            <button style={{
-              marginTop: '30px',
-              padding: '15px 30px',
-              background: '#4d4dff',
-              color: 'white',
-              border: 'none',
-              borderRadius: '5px',
-              fontWeight: 'bold',
-              cursor: 'pointer',
-              fontSize: '1rem'
-            }}>
-              Download Resume
-            </button>*/}
           </div> 
-        
 
           {/* right column visual */}
           <div style={{
@@ -101,4 +87,3 @@ const About = () => {
     </div>
   )
 }
-export default About;
