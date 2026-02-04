@@ -5,133 +5,121 @@ Date Created: 01/26/2026
 Last Updated: 01/29/2026
 */}
 
-import FloatingTech from '../components/FloatingTech'
-import ProjectSection from '../components/ProjectSection'
+import { useState, useEffect, useRef } from 'react';
+import ProjectSection from '../components/ProjectSection';
 
 export default function Projects() {
+  const [activeSection, setActiveSection] = useState(0);
+  const scrollContainerRef = useRef(null);
+
+  const handleScroll = (e) => {
+    const scrollPos = e.target.scrollTop;
+    const windowHeight = window.innerHeight;
+    const index = Math.round(scrollPos / windowHeight);
+    setActiveSection(index);
+  };
+
+  const projectList = [
+    { title: "Intro", id: 0 },
+    { title: "Project 1", id: 1 },
+    { title: "Project 2", id: 2 },
+    { title: "Project 3", id: 3 },
+    { title: "Footer?", id: 4 },
+  ];
+
   return (
     <>
       <style>
         {`
-          .no-scrollbar::-webkit-scrollbar {
-            display: none;
-          }
-          .no-scrollbar {
-            -ms-overflow-style: none;  
-            scrollbar-width: none;     
-          }
-          * {
-            box-sizing: border-box;
+          .no-scrollbar::-webkit-scrollbar { display: none; }
+          .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+          * { box-sizing: border-box; }
+          
+          /* The 'Power Line' animation */
+          @keyframes flow {
+            0% { background-position: 0% 0%; }
+            100% { background-position: 0% 100%; }
           }
         `}
       </style>
 
-      <div 
-        style={{ 
-          width: '100%', 
-          height: '100vh', 
-          background: '#050505', 
-          position: 'relative',
-          overflow: 'hidden'
+      {/* background */}
+      <div style={{ 
+        position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', 
+        background: '#050505', zIndex: 0 
+      }} />
+
+      {/* scrolling sidebar */}
+      <div style={{
+        position: 'fixed', left: '40px', top: '15%', bottom: '15%',
+        width: '2px', background: 'rgba(255,255,255,0.1)', zIndex: 100,
+        display: 'flex', flexDirection: 'column', justifyContent: 'space-between',
+        alignItems: 'center'
       }}>
-        
-        {/* 3d background */}
-        <div style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', zIndex: 0 }}>
-          <FloatingTech />
+        {/* "current" overlay" */}
+        <div style={{
+          position: 'absolute', top: 0, width: '100%', height: '100%',
+          backgroundImage: 'linear-gradient(transparent, #4d4dff, transparent)',
+          backgroundSize: '100% 200%', animation: 'flow 3s linear infinite',
+          opacity: 0.5
+        }} />
+
+        {projectList.map((proj, i) => (
+          <div key={i} style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
+            {/* current node */}
+            <div style={{
+              width: '12px', height: '12px', borderRadius: '50%',
+              background: activeSection === i ? '#4d4dff' : '#222',
+              boxShadow: activeSection === i ? '0 0 15px #4d4dff, 0 0 30px #4d4dff' : 'none',
+              transition: 'all 0.4s ease', zIndex: 2, border: '2px solid #050505'
+            }} />
+            
+            {/* label */}
+            <span style={{
+              position: 'absolute', left: '25px', whiteSpace: 'nowrap',
+              fontFamily: 'monospace', fontSize: '12px',
+              color: activeSection === i ? '#fff' : '#444',
+              transition: 'all 0.4s ease',
+              textTransform: 'uppercase', letterSpacing: '2px'
+            }}>
+              {proj.title}
+            </span>
+          </div>
+        ))}
+      </div>
+
+      <div 
+        className="no-scrollbar"
+        onScroll={handleScroll}
+        ref={scrollContainerRef}
+        style={{ 
+          position: 'absolute', top: 0, left: 0, 
+          width: '100%', height: '100%', zIndex: 10, 
+          overflowY: 'scroll', scrollSnapType: 'y mandatory', scrollBehavior: 'smooth'
+        }}
+      >
+
+        <div style={{ height: '100vh', scrollSnapAlign: 'start', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+           <h1 style={{ fontSize: '5vw', color: 'white', textAlign: 'center' }}>
+             Make a good intro
+           </h1>
         </div>
 
-        <div 
-            className="no-scrollbar"
-            style={{ 
-                position: 'absolute', top: 0, left: 0, 
-                width: '100%', height: '100%', 
-                zIndex: 10, 
-                overflowY: 'scroll', 
-                overflowX: 'hidden', 
-                overscrollBehavior: 'none',
-                scrollSnapType: 'y mandatory', 
-                scrollBehavior: 'smooth'
-            }}
-        >
-          
-          <div style={{
-            position: 'relative', 
-            top: 0,
-            height: '100vh', 
-            width: '100%',
-            scrollSnapAlign: 'start', 
-            display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center',
-            background: 'transparent',
-            zIndex: 0,
-            color: 'white', 
-          }}>
-            <h1 style={{ fontSize: '6vw', margin: 0, lineHeight: 0.9, textAlign: 'center' }}>
-              PLACE <br /> 
-              <span style={{ color: '#4d4dff' }}>HOLDER</span>
-            </h1>
-            <div style={{ marginTop: '50px', fontSize: '1.5rem', opacity: 0.5 }}>
-              ↓
-            </div>
-          </div>
+        {/* project sections */}
+        <div style={{ scrollSnapAlign: 'start' }}>
+          <ProjectSection title="Project 1" align="left" background="transparent" />
+        </div>
+        <div style={{ scrollSnapAlign: 'start' }}>
+          <ProjectSection title="Project 2" align="right" background="transparent" />
+        </div>
+        <div style={{ scrollSnapAlign: 'start' }}>
+          <ProjectSection title="Project 3" align="left" background="transparent" />
+        </div>
 
-          {/* section 2: simulation? */}
-          <div style={{ scrollSnapAlign: 'start' }}>
-            <ProjectSection 
-                title=""
-                stack=""
-                description=""
-                image=""
-                align="left"
-                background="#0a192f" 
-            />
-          </div>
-
-          {/* section 3: portfolio? */}
-          <div style={{ scrollSnapAlign: 'start' }}>
-            <ProjectSection 
-                title=""
-                stack=""
-                description=""
-                image=""
-                align="right"
-                background="#161616" 
-            />
-          </div>
-
-          {/* section 4: ? */}
-          <div style={{ scrollSnapAlign: 'start' }}>
-            <ProjectSection 
-                title=""
-                stack=""
-                description=""
-                image=""
-                align="left"
-                background="#1a1125" 
-            />
-          </div>
-
-          {/* section 5: footer */}
-          <div style={{
-            position: 'relative', 
-            zIndex: 10,          
-            height: '50vh', 
-            scrollSnapAlign: 'start', 
-            display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center',
-            background: '#000000',
-            borderTop: '1px solid #333',
-            boxShadow: '0 -50px 100px rgba(0,0,0,0.8)'
-          }}>
-            <h2 style={{ fontSize: '3rem' }}>Temp Text</h2>
-            <button style={{ 
-                padding: '15px 40px', fontSize: '1.2rem', background: '#4d4dff', 
-                color: 'white', border: 'none', borderRadius: '5px', marginTop: '20px', cursor: 'pointer' 
-            }}>
-              Contact Me?
-            </button>
-          </div>
-
+        {/* footer */}
+        <div style={{ height: '50vh', scrollSnapAlign: 'start', background: 'transparent', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
         </div>
       </div>
     </>
-  )
+  );
 }

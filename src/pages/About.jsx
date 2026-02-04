@@ -55,7 +55,7 @@ export default function About() {
                 <span style={{fontWeight: 'bold', fontSize: '1.2rem', color: '#4d4dff' }}>
                     Skills:
                 </span> <br />
-                Coding: C#, Javascript, React <br />
+                Coding: C#, Javascript, React, PLC Ladder Logic <br />
                 3D Modeling: Blender, Fusion 360 <br />
                 Simulation: Emulate3D <br />
             </p>
@@ -70,7 +70,6 @@ export default function About() {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            border: '1px dashed #444'
           }}>
             <img 
               src="/portfolio/images/SelfPortrait.jpeg" 

@@ -2,7 +2,7 @@
 Filename: Contact.jsx
 Author: Tavian Dodd
 Date Created: 02/01/2026
-Last Updated: 02/02/2026
+Last Updated: 02/03/2026
 */}
 
 import React, { useState } from 'react';
@@ -223,16 +223,16 @@ export default function Contact() {
             {/* social links */}
             <div style={{ 
               display: 'flex', 
-              justifyContent: 'center', // This centers them horizontally
-              alignItems: 'center',     // This keeps them aligned vertically
-              gap: '40px',              // Increased gap slightly for a cleaner look
-              width: '100%',            // Ensures the container takes up the full column width
-              marginTop: '30px',        // Adds space between the buttons above and the icons
-              padding: '20px 0'         // Optional: adds some breathing room
+              justifyContent: 'center',
+              alignItems: 'center',     
+              gap: '40px',             
+              width: '100%',           
+              marginTop: '30px',       
+              padding: '20px 0'         
             }}>
               {/* GitHub */}
               <a 
-                href="https://github.com/yourusername" 
+                href="https://github.com/TavianD35" 
                 target="_blank" 
                 rel="noreferrer"
                 style={{ transition: 'all 0.3s ease', cursor: 'pointer' }}
@@ -252,7 +252,7 @@ export default function Contact() {
 
               {/* LinkedIn */}
               <a 
-                href="https://linkedin.com/in/yourusername" 
+                href="https://linkedin.com/in/tavian-dodd" 
                 target="_blank" 
                 rel="noreferrer"
                 style={{ transition: 'all 0.3s ease', cursor: 'pointer' }}

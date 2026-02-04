@@ -2,7 +2,7 @@
 Filename: SimulationLoader.jsx
 Author: Tavian Dodd
 Date Created: 01/22/2026
-Last Updated: 01/22/2026
+Last Updated: 02/03/2026
 */}
 
 import { useProgress } from '@react-three/drei'
@@ -14,18 +14,17 @@ export function SimulationLoader({ showRotateHint }) {
   const [dots, setDots] = useState('')
   const [finished, setFinished] = useState(false)
 
-  // "fake loader" loop"
+  // fake loader
   useEffect(() => {
     let interval = setInterval(() => {
       setPercent(prev => {
-        // stop timer at 100%
         if (prev >= 100) {
           clearInterval(interval)
           setFinished(true)
           return 100
         }
         
-       // Speed control
+       // speed control
         const increment = Math.random() * 2 + 0.5 
         
         // wait for real load (dont pass 100)
@@ -35,7 +34,7 @@ export function SimulationLoader({ showRotateHint }) {
 
         return Math.min(prev + increment, 100)
       })
-    }, 50)
+    }, 25)
 
     return () => clearInterval(interval)
   }, [activeProgress])

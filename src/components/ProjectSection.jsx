@@ -2,7 +2,7 @@
 Filename: ProjectSection.jsx
 Author: Tavian Dodd
 Date Created: 01/26/2026
-Last Updated: 01/29/2026
+Last Updated: 02/03/2026
 */}
 
 import { useState, useEffect } from 'react'
@@ -78,20 +78,6 @@ export default function ProjectSection({ title, stack, description, image, align
           }}>
             {description}
           </p>
-          <button style={{
-            marginTop: isMobile ? '20px' : '30px',
-            padding: isMobile ? '12px 25px' : '15px 35px',
-            background: 'white',
-            color: 'black',
-            border: 'none',
-            borderRadius: '30px',
-            cursor: 'pointer',
-            fontWeight: 'bold',
-            fontSize: isMobile ? '0.9rem' : '1rem',
-            alignSelf: isMobile ? 'center' : 'flex-start'
-          }}>
-            View Case Study
-          </button>
         </div>
 
         {/* image side */}
@@ -110,7 +96,7 @@ export default function ProjectSection({ title, stack, description, image, align
           boxShadow: '0 30px 60px rgba(0,0,0,0.5)',
           border: '1px solid rgba(255,255,255,0.1)'
         }}>
-            {/* replace with screen shots later */}
+            {/* replace with screen shots or videos later */}
             <img src={image} alt={title} style={{ width: '100%', height: '100%', objectFit: 'cover', opacity: 0.9 }} />
         </div>
 

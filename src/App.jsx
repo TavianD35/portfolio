@@ -2,11 +2,11 @@
 Filename: App.jsx
 Author: Tavian Dodd
 Date Created: 01/15/2026
-Last Updated: 02/01/2026
+Last Updated: 02/03/2026
 */}
 
 import CustomCursor from './components/CustomCursor'
-import { Routes, Route } from 'react-router-dom'
+import { HashRouter as Router, Routes, Route, HashRouter } from 'react-router-dom'
 import About from './pages/About'
 import Projects from './pages/Projects'
 import Contact from './pages/Contact' 
@@ -39,7 +39,7 @@ function RotatePrompt() {
         fontSize: '40px', marginBottom: '20px', 
         animation: 'spin 2s infinite ease-in-out' 
       }}>
-        📱↻
+        📱↺
       </div>
       <h2 style={{ marginBottom: '10px' }}>Please Rotate Device</h2>
       <p style={{ color: '#aaa', maxWidth: '300px' }}>
