@@ -2,7 +2,7 @@
 Filename: Contact.jsx
 Author: Tavian Dodd
 Date Created: 02/01/2026
-Last Updated: 02/03/2026
+Last Updated: 02/04/2026
 */}
 
 import React, { useState } from 'react';
@@ -76,7 +76,7 @@ export default function Contact() {
         }}>
           
           {/* left column: contact form */}
-          <div style={{ border: '1px solid #333', padding: '20px', background: '#111' }}>
+          <div style={{ border: '1px solid #333', padding: '20px', background: '#0d0d0d' }}>
             <h3 style={{ color: '#4d4dff', marginTop: 0 }}>// Send Message</h3>
             
             <div style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
@@ -122,21 +122,22 @@ export default function Contact() {
                   justifyContent: 'center',
                   width: '100%',
                   boxSizing: 'border-box',
-                  background: '#4d4dff', 
+                  background: '#3131fb', 
                   color: '#000', 
                   border: 'none', 
                   padding: '12px', 
-                  fontWeight: 'bold', 
+                  fontWeight: 'bold',
+                  fontSize: '18px', 
                   fontFamily: 'monospace',
                   cursor: 'pointer',
                   transition: 'all 0.2s'
                 }}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.background = '#4d4dff';
+                  e.currentTarget.style.background = '#3131fb';
                   e.currentTarget.style.boxShadow = '0 0 20px rgba(173, 173, 173, 0.3)';
                 }}
                 onMouseLeave={(e) => {
-                  e.currentTarget.style.background = '#4d4dff';
+                  e.currentTarget.style.background = '#3131fb';
                   e.currentTarget.style.boxShadow = 'none';
                 }}
               >
@@ -149,7 +150,7 @@ export default function Contact() {
           <div style={{ display: 'flex', flexDirection: 'column', gap: '30px' }}>
             
             {/* email copy */}
-            <div style={{ border: '1px solid #333', padding: '20px', background: '#111' }}>
+            <div style={{ border: '1px solid #333', padding: '20px', background: '#0d0d0d' }}>
               <h3 style={{ color: '#4d4dff', marginTop: 0 }}>// Direct Contact</h3>
               <a 
                 onClick={copyToClipboard}
@@ -160,20 +161,21 @@ export default function Contact() {
                   gap: '10px',
                   width: '100%',
                   boxSizing: 'border-box', 
-                  background: '#4d4dff', 
+                  background: '#3131fb', 
                   color: '#000', 
                   padding: '12px', 
                   textDecoration: 'none',
                   fontWeight: 'bold',
+                  fontSize: '18px',
                   fontFamily: 'monospace',
                   transition: 'all 0.2s'
                 }}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.background = '#4d4dff';
+                  e.currentTarget.style.background = '#3131fb';
                   e.currentTarget.style.boxShadow = '0 0 20px rgba(173, 173, 173, 0.3)';
                 }}
                 onMouseLeave={(e) => {
-                  e.currentTarget.style.background = '#4d4dff';
+                  e.currentTarget.style.background = '#3131fb';
                   e.currentTarget.style.boxShadow = 'none';
                 }}
               >
@@ -182,7 +184,7 @@ export default function Contact() {
             </div>
 
             {/* donwload resume button*/}
-            <div style={{ border: '1px solid #333', padding: '20px', background: '#111' }}>
+            <div style={{ border: '1px solid #333', padding: '20px', background: '#0d0d0d' }}>
               <h3 style={{ color: '#4d4dff', marginTop: 0 }}>// Download Resume</h3>
               <a 
                 href="/your-resume-file.pdf" 
@@ -194,20 +196,21 @@ export default function Contact() {
                   gap: '10px',
                   width: '100%',
                   boxSizing: 'border-box', 
-                  background: '#4d4dff', 
+                  background: '#3131fb', 
                   color: '#000', 
                   padding: '12px', 
                   textDecoration: 'none',
                   fontWeight: 'bold',
+                  fontSize: '18px',
                   fontFamily: 'monospace',
                   transition: 'all 0.2s'
                 }}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.background = '#4d4dff';
+                  e.currentTarget.style.background = '#3131fb';
                   e.currentTarget.style.boxShadow = '0 0 20px rgba(173, 173, 173, 0.3)';
                 }}
                 onMouseLeave={(e) => {
-                  e.currentTarget.style.background = '#4d4dff';
+                  e.currentTarget.style.background = '#3131fb';
                   e.currentTarget.style.boxShadow = 'none';
                 }}
               >

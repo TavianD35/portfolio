@@ -7,7 +7,6 @@ import React, { useState, useEffect } from 'react'
 import * as THREE from 'three'
 import { useGLTF, useTexture, useCursor, Edges } from '@react-three/drei'
 
-// Added 'isMobile' to props
 function Monitor({ geometry, texture, isHighlighted, isSitting, transitionDone, isMobile, edgeOffset = [0, 0, 0], ...props }) {
   const [hovered, setHovered] = useState(false)
   
@@ -61,25 +60,28 @@ export function Model({isSitting, ...props}) {
   const aboutScreenTexture = useTexture(import.meta.env.BASE_URL + 'images/AboutPageScreenshot.png')
   aboutScreenTexture.flipY = false 
   aboutScreenTexture.toneMapped = false 
-  aboutScreenTexture.anisotropy = 16 
-  aboutScreenTexture.minFilter = THREE.LinearFilter
-  aboutScreenTexture.magFilter = THREE.LinearFilter
+  aboutScreenTexture.anisotropy = 16
+  aboutScreenTexture.minFilter = THREE.LinearMipmapLinearFilter;
+  aboutScreenTexture.magFilter = THREE.LinearFilter;
+  aboutScreenTexture.generateMipmaps = true;
 
   // load projects screen
   const projectsScreenTexture = useTexture(import.meta.env.BASE_URL + 'images/ProjectsPageScreenshot.png')
   projectsScreenTexture.flipY = false 
   projectsScreenTexture.toneMapped = false 
-  projectsScreenTexture.anisotropy = 16 
-  projectsScreenTexture.minFilter = THREE.LinearFilter
-  projectsScreenTexture.magFilter = THREE.LinearFilter
+  projectsScreenTexture.anisotropy = 16
+  projectsScreenTexture.minFilter = THREE.LinearMipmapLinearFilter;
+  projectsScreenTexture.magFilter = THREE.LinearFilter;
+  projectsScreenTexture.generateMipmaps = true;
 
   // load contact screen
   const contactScreenTexture = useTexture(import.meta.env.BASE_URL + 'images/ContactPageScreenshot.png')
   contactScreenTexture.flipY = false 
   contactScreenTexture.toneMapped = false 
-  contactScreenTexture.anisotropy = 16 
-  contactScreenTexture.minFilter = THREE.LinearFilter
-  contactScreenTexture.magFilter = THREE.LinearFilter
+  contactScreenTexture.anisotropy = 16
+  contactScreenTexture.minFilter = THREE.LinearMipmapLinearFilter;
+  contactScreenTexture.magFilter = THREE.LinearFilter;
+  contactScreenTexture.generateMipmaps = true;
 
   // mobile screen highlight cycling
   const [highlightedIndex, setHighlightedIndex] = useState(null)
@@ -157,7 +159,7 @@ export function Model({isSitting, ...props}) {
           <mesh geometry={nodes.Cube004_4.geometry} material={materials.Key_Plastic} />
         </group>
         <mesh geometry={nodes.MonitorLeft.geometry} material={materials.Plastic_Frame} position={[-0.22, 0, -0.874]} />
-        
+
         {/* left monitor */}
         <Monitor 
           geometry={nodes.MonitorLeftScreen.geometry}
@@ -185,7 +187,7 @@ export function Model({isSitting, ...props}) {
         />
 
         <mesh geometry={nodes.MonitorRight.geometry} material={materials.Plastic_Frame} position={[-0.22, 0, -0.874]} />
-        
+
         {/* right monitor */}
         <Monitor 
           geometry={nodes.MonitorRightScreen.geometry}
@@ -205,8 +207,95 @@ export function Model({isSitting, ...props}) {
         <mesh geometry={nodes.Top.geometry} material={materials['Mouse - Mat Grey']} position={[-0.22, 0, -0.874]} />
         <mesh geometry={nodes.Wheel.geometry} material={materials['Mouse - Wheel Grey']} position={[-0.224, 0, -0.874]} />
       </group>
+
+      <mesh geometry={nodes.Circle.geometry} material={materials.Emmision} position={[-0.317, 1.566, 0]} rotation={[0, 0, -Math.PI / 2]} scale={[0.385, 1, 0.333]}>
+        <meshStandardMaterial 
+        emissive="#ffffff" 
+        emissiveIntensity={10} 
+        toneMapped={false} 
+        />
+      </mesh>
+
+      <mesh geometry={nodes.Circle001.geometry} material={materials.Emmision} position={[-0.317, 1.972, 0]} rotation={[0, 0, -Math.PI / 2]} scale={[0.385, 1, 0.333]}>
+        <meshStandardMaterial 
+          emissive="#ffffff" 
+          emissiveIntensity={10} 
+          toneMapped={false} 
+        />
+      </mesh>
+
+      <mesh geometry={nodes.Circle002.geometry} material={materials.Emmision} position={[-0.317, 1.769, 0]} rotation={[0, 0, -Math.PI / 2]} scale={[0.385, 1, 0.333]}>
+        <meshStandardMaterial 
+          emissive="#ffffff" 
+          emissiveIntensity={10} 
+          toneMapped={false} 
+        />
+      </mesh>
+
+      <mesh geometry={nodes.Circle003.geometry} material={materials.Emmision} position={[-0.317, 1.871, 0.152]} rotation={[0, 0, -Math.PI / 2]} scale={[0.385, 1, 0.333]}>
+        <meshStandardMaterial 
+          emissive="#ffffff" 
+          emissiveIntensity={10} 
+          toneMapped={false} 
+        />
+      </mesh>
+
+      <mesh geometry={nodes.Circle004.geometry} material={materials.Emmision} position={[-0.317, 1.871, -0.153]} rotation={[0, 0, -Math.PI / 2]} scale={[0.385, 1, 0.333]}>
+        <meshStandardMaterial 
+        emissive="#ffffff" 
+        emissiveIntensity={10} 
+        toneMapped={false} 
+      />
+      </mesh>
+
+      <mesh geometry={nodes.Circle005.geometry} material={materials.Emmision} position={[-0.317, 1.973, -0.305]} rotation={[0, 0, -Math.PI / 2]} scale={[0.385, 1, 0.333]}>
+        <meshStandardMaterial 
+          emissive="#ffffff" 
+          emissiveIntensity={10} 
+          toneMapped={false} 
+        />
+      </mesh>
+
+      <mesh geometry={nodes.Circle006.geometry} material={materials.Emmision} position={[-0.317, 1.871, -0.458]} rotation={[0, 0, -Math.PI / 2]} scale={[0.385, 1, 0.333]}>
+        <meshStandardMaterial 
+          emissive="#ffffff" 
+          emissiveIntensity={10} 
+          toneMapped={false} 
+        />
+      </mesh>
+
+      <mesh geometry={nodes.Circle007.geometry} material={materials.Emmision} position={[-0.317, 1.973, 0.305]} rotation={[0, 0, -Math.PI / 2]} scale={[0.385, 1, 0.333]}>
+        <meshStandardMaterial 
+          emissive="#ffffff" 
+          emissiveIntensity={10} 
+          toneMapped={false} 
+        />
+      </mesh>
+
+      <mesh geometry={nodes.Circle008.geometry} material={materials.Emmision} position={[-0.317, 1.871, 0.457]} rotation={[0, 0, -Math.PI / 2]} scale={[0.385, 1, 0.333]}>
+        <meshStandardMaterial 
+          emissive="#ffffff"
+          emissiveIntensity={10} 
+          toneMapped={false} 
+        />
+      </mesh>
+
+      <mesh geometry={nodes.Circle009.geometry} material={materials.Emmision} position={[-0.317, 1.363, 0]} rotation={[0, 0, -Math.PI / 2]} scale={[0.385, 1, 0.333]}>
+        <meshStandardMaterial 
+          emissive="#ffffff" 
+          emissiveIntensity={10} 
+          toneMapped={false} 
+        />
+      </mesh>
+
+      <pointLight 
+        position={[0.3, 1.7, 0]} 
+        intensity={0.5} 
+        distance={5} 
+        color="#ffffff" 
+      />
     </group>
   )
 }
 
-useGLTF.preload('/models/Room.glb')
+useGLTF.preload('/Room.glb')

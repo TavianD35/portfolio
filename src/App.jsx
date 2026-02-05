@@ -229,10 +229,14 @@ function Home3D({ onExit }) {
         </div>
       )}
 
-      <Canvas camera={{ position: standingPos, fov: 50 }}>
+      <Canvas 
+        dpr={[1, 2]}
+        gl={{antialias: true}}
+        camera={{ position: standingPos, fov: 50 }}
+      >
         <Suspense fallback={null}>
           <ambientLight intensity={0.35} />
-          <Environment preset="city" background={false} blur={1} environmentIntensity={0.2} />
+          <Environment preset="city" background={false} blur={1} environmentIntensity={0.05} />
           <rectAreaLight width={10} height={10} position={[0, 5, -5]} intensity={5} color="#2c2c54" lookAt={[0, 0, 0]} />
           <SpotLight position={[3, 4, 2]} angle={0.5} penumbra={0.5} intensity={2} castShadow={!isMobile} color="#e0e0ff" />
           <SpotLight position={[-2, 3, -2]} intensity={3} color="blue" angle={0.5} />

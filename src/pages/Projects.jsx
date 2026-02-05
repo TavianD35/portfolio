@@ -2,7 +2,7 @@
 Filename: Projects.jsx
 Author: Tavian Dodd
 Date Created: 01/26/2026
-Last Updated: 01/29/2026
+Last Updated: 02/04/2026
 */}
 
 import { useState, useEffect, useRef } from 'react';
@@ -58,10 +58,14 @@ export default function Projects() {
       }}>
         {/* "current" overlay" */}
         <div style={{
-          position: 'absolute', top: 0, width: '100%', height: '100%',
-          backgroundImage: 'linear-gradient(transparent, #4d4dff, transparent)',
-          backgroundSize: '100% 200%', animation: 'flow 3s linear infinite',
-          opacity: 0.5
+          position: 'absolute', 
+          top: 0, 
+          width: '100%', 
+          height: `${(activeSection / (projectList.length - 1)) * 100}%`,
+          background: 'linear-gradient(to bottom, transparent, #4d4dff)',
+          boxShadow: '0 0 15px #4d4dff, 0 0 45px rgba(77, 77, 255, 0.5)',
+          transition: 'height 0.4s ease-out',
+          opacity: 0.8
         }} />
 
         {projectList.map((proj, i) => (
@@ -69,8 +73,8 @@ export default function Projects() {
             {/* current node */}
             <div style={{
               width: '12px', height: '12px', borderRadius: '50%',
-              background: activeSection === i ? '#4d4dff' : '#222',
-              boxShadow: activeSection === i ? '0 0 15px #4d4dff, 0 0 30px #4d4dff' : 'none',
+              background: activeSection >= i ? '#4d4dff' : '#222',
+              boxShadow: activeSection >= i ? '0 0 15px #4d4dff' : 'none',
               transition: 'all 0.4s ease', zIndex: 2, border: '2px solid #050505'
             }} />
             

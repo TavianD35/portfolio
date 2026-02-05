@@ -60,7 +60,7 @@ export function SimulationLoader({ showRotateHint }) {
     <div style={{
       // use fixed/inset to lock it to the screen (prevents scroll/zoom issues)
       position: 'fixed', inset: 0,
-      background: '#111', color: '#fff',
+      background: '#000000', color: '#fff',
       fontFamily: 'monospace',
       display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center',
       zIndex: 9999

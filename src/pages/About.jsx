@@ -2,7 +2,7 @@
 Filename: About.jsx
 Author: Tavian Dodd
 Date Created: 01/21/2026
-Last Updated: 02/01/2026
+Last Updated: 02/04/2026
 */}
 
 import WireframeTerrain from "../components/WireframeTerrain";
@@ -72,7 +72,7 @@ export default function About() {
             justifyContent: 'center',
           }}>
             <img 
-              src="/portfolio/images/SelfPortrait.jpeg" 
+              src="/portfolio/images/SelfPortrait.PNG" 
               style={{
                 width: '100%',
                 height: '100%',
