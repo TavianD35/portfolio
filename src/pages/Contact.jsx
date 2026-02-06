@@ -2,10 +2,11 @@
 Filename: Contact.jsx
 Author: Tavian Dodd
 Date Created: 02/01/2026
-Last Updated: 02/04/2026
+Last Updated: 02/05/2026
 */}
 
 import React, { useState } from 'react';
+import emailjs from '@emailjs/browser';
 
 export default function Contact() {
   const [copied, setCopied] = useState(false);
@@ -31,7 +32,73 @@ export default function Contact() {
     setTimeout(() => setCopied(false), 2000);
   };
 
+  const [formData, setFormData] = useState({
+    sender_name: '',
+    email_address: '',
+    message_body: ''
+  });
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
+  };
+
+  // 'idle', 'sending', or 'success'
+  const [status, setStatus] = useState('idle');
+
+  const validateForm = () => {
+    // check if any fields are empty
+    if (!formData.sender_name.trim() || !formData.email_address.trim() || !formData.message_body.trim()) {
+      alert("SYSTEM ERROR: All fields must be populated before transmission.");
+      return false;
+    }
+
+    // validate email address
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(formData.email_address)) {
+      alert("SYSTEM ERROR: Invalid email_address format detected.");
+      return false;
+    }
+
+    return true;
+  };
+
+  const handleSend = () => {
+    // run validation checks first
+    if (!validateForm()) return;
+
+    setStatus('sending');
+
+    const serviceId = 'service_y3hmzpa';
+    const templateId = 'template_0r6r56a';
+    const publicKey = 'sTbtXetdoXnKADPmh';
+
+    emailjs.send(serviceId, templateId, formData, publicKey)
+    .then((response) => {
+      setFormData({
+        sender_name: '',
+        email_address: '',
+        message_body: ''
+      });
+      
+      setStatus('success');
+
+      setTimeout(() => {
+        setStatus('idle');
+      }, 5000);
+    })
+    .catch((err) => {
+      console.error('FAILED...', err);
+      alert("CRITICAL ERROR: Transmission failed.");
+      setStatus('idle');
+    });
+  };
+
   return (
+    
     <div style={{
       width: '100vw',
       minHeight: '100vh',
@@ -41,6 +108,21 @@ export default function Contact() {
       boxSizing: 'border-box',
       fontFamily: 'monospace'
     }}>
+
+      <style>
+  {`
+    input:-webkit-autofill,
+    input:-webkit-autofill:hover, 
+    input:-webkit-autofill:focus,
+    textarea:-webkit-autofill,
+    textarea:-webkit-autofill:hover,
+    textarea:-webkit-autofill:focus {
+      -webkit-text-fill-color: #eee !important;
+      -webkit-box-shadow: 0 0 0px 1000px #000 inset !important;
+      transition: background-color 5000s ease-in-out 0s;
+    }
+  `}
+</style>
 
     {/* background image */}
     <div style={{
@@ -76,74 +158,102 @@ export default function Contact() {
         }}>
           
           {/* left column: contact form */}
-          <div style={{ border: '1px solid #333', padding: '20px', background: '#0d0d0d' }}>
+          <div style={{ border: '1px solid #333', padding: '20px', background: '#0d0d0d', minHeight: '380px' }}>
             <h3 style={{ color: '#4d4dff', marginTop: 0 }}>// Send Message</h3>
             
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
-              <input 
-                placeholder="sender_name" 
-                style={{ 
-                  background: '#000', 
-                  border: '1px solid #333', 
-                  padding: '12px', 
-                  color: '#fff', 
-                  fontFamily: 'monospace',
-                  outline: 'none'
-                }} 
-              />
-              <input 
-                placeholder="email_address" 
-                style={{ 
-                  background: '#000', 
-                  border: '1px solid #333', 
-                  padding: '12px', 
-                  color: '#fff', 
-                  fontFamily: 'monospace',
-                  outline: 'none'
-                }} 
-              />
-              <textarea 
-                placeholder="message_body" 
-                style={{ 
-                  background: '#000', 
-                  border: '1px solid #333', 
-                  padding: '12px', 
-                  color: '#fff', 
-                  fontFamily: 'monospace', 
-                  minHeight: '150px',
-                  outline: 'none',
-                  resize: 'vertical'
-                }} 
-              />
-              <button 
-                style={{ 
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  width: '100%',
-                  boxSizing: 'border-box',
-                  background: '#3131fb', 
-                  color: '#000', 
-                  border: 'none', 
-                  padding: '12px', 
-                  fontWeight: 'bold',
-                  fontSize: '18px', 
-                  fontFamily: 'monospace',
-                  cursor: 'pointer',
-                  transition: 'all 0.2s'
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.background = '#3131fb';
-                  e.currentTarget.style.boxShadow = '0 0 20px rgba(173, 173, 173, 0.3)';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.background = '#3131fb';
-                  e.currentTarget.style.boxShadow = 'none';
-                }}
-              >
-                Send
-              </button>
-            </div>
+            {status === 'success' ? (
+              <div style={{ textAlign: 'center', padding: '40px 0' }}>
+                <h3 style={{ color: '#007500', fontFamily: 'monospace' }}>{'>'} MESSAGE_TRANSMITTED_SUCCESSFULLY</h3>
+                <p style={{ color: '#eee', fontSize: '0.9rem', marginBottom: '20px' }}>System: Response recorded!</p>
+              </div>
+            ) : (
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
+                <input 
+                  name ="sender_name" 
+                  value={formData.sender_name}
+                  onChange={handleInputChange}
+                  placeholder='sender_name'
+                  disabled={status === 'sending'}
+                  style={{ 
+                    background: '#000', 
+                    border: '1px solid #333', 
+                    padding: '12px', 
+                    color: '#fff', 
+                    fontFamily: 'monospace',
+                    outline: 'none',
+                    opacity: status === 'sending' ? 0.5 : 1
+                  }} 
+                />
+                <input 
+                  name ="email_address" 
+                  value={formData.email_address}
+                  onChange={handleInputChange}
+                  placeholder="email_address" 
+                  disabled={status === 'sending'}
+                  style={{ 
+                    background: '#000', 
+                    border: '1px solid #333', 
+                    padding: '12px', 
+                    color: '#fff', 
+                    fontFamily: 'monospace',
+                    outline: 'none',
+                    opacity: status === 'sending' ? 0.5 : 1
+                  }} 
+                />
+                <textarea
+                  name ="message_body" 
+                  value={formData.message_body}
+                  onChange={handleInputChange}
+                  placeholder="message_body" 
+                  disabled={status === 'sending'}
+                  style={{ 
+                    background: '#000', 
+                    border: '1px solid #333', 
+                    padding: '12px', 
+                    color: '#fff', 
+                    fontFamily: 'monospace', 
+                    minHeight: '150px',
+                    outline: 'none',
+                    resize: 'vertical',
+                    opacity: status === 'sending' ? 0.5 : 1
+                  }} 
+                />
+                <button
+                  onClick={handleSend}
+                  disabled={status === 'sending'}
+                  style={{ 
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    width: '100%',
+                    boxSizing: 'border-box',
+                    background: status === 'sending' ? '#111' : '#3131fb', 
+                    color: '#000', 
+                    border: 'none', 
+                    padding: '12px', 
+                    fontWeight: 'bold',
+                    fontSize: '18px', 
+                    fontFamily: 'monospace',
+                    cursor: status === 'sending' ? 'not-allowed' : 'pointer',
+                    transition: 'all 0.2s'
+                  }}
+                  onMouseEnter={(e) => {
+                    if (status !== 'sending') {
+                      e.currentTarget.style.background = '#3131fb';
+                      e.currentTarget.style.boxShadow = '0 0 20px rgba(173, 173, 173, 0.3)';
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    if (status !== 'sending') {
+                      e.currentTarget.style.background = '#3131fb';
+                      e.currentTarget.style.boxShadow = 'none';
+                    }
+                  }}
+                >
+                  {status === 'sending' ? 'TRANSMITTING...' : 'Send'}
+                </button>
+              </div>
+            )}
           </div>
 
           {/* right column: email copy, download resume, social links */}
@@ -241,7 +351,7 @@ export default function Contact() {
                 style={{ transition: 'all 0.3s ease', cursor: 'pointer' }}
                 onMouseEnter={(e) => {
                   e.currentTarget.querySelector('svg').style.color = '#6cc644';
-                  e.currentTarget.style.transform = 'translateY(-5px) scale(1.1)';
+                  e.currentTarget.style.transform = 'translateY(-5px) scale(1.3)';
                 }}
                 onMouseLeave={(e) => {
                   e.currentTarget.querySelector('svg').style.color = '#888';
@@ -261,7 +371,7 @@ export default function Contact() {
                 style={{ transition: 'all 0.3s ease', cursor: 'pointer' }}
                 onMouseEnter={(e) => {
                   e.currentTarget.querySelector('svg').style.color = '#0a66c2';
-                  e.currentTarget.style.transform = 'translateY(-5px) scale(1.1)';
+                  e.currentTarget.style.transform = 'translateY(-5px) scale(1.3)';
                 }}
                 onMouseLeave={(e) => {
                   e.currentTarget.querySelector('svg').style.color = '#888';

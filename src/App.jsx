@@ -9,7 +9,8 @@ import CustomCursor from './components/CustomCursor'
 import { HashRouter as Router, Routes, Route, HashRouter } from 'react-router-dom'
 import About from './pages/About'
 import Projects from './pages/Projects'
-import Contact from './pages/Contact' 
+import Contact from './pages/Contact'
+import './app.css' 
 import MobilePortfolio from './components/MobilePortfolio'
 import { SimulationLoader } from './SimulationLoader'
 import { useState, useRef, useEffect, Suspense } from 'react'
@@ -204,8 +205,8 @@ function Home3D({ onExit }) {
             onClick={() => setIsSitting(!isSitting)} 
             style={{
               padding: '10px 15px', 
-              background: 'transparent',
-              color: '#4d4dff',
+              background: '#4d4dff',
+              color: '#000',
               border: '1px solid #4d4dff',
               borderRadius: '5px',
               fontFamily: 'monospace',
@@ -213,15 +214,20 @@ function Home3D({ onExit }) {
               cursor: 'pointer',
               transition: 'all 0.2s',
               opacity: transitionState === 'idle' ? 1 : 0,
-              boxShadow: '0 0 10px rgba(77, 77, 255, 0.2)'
+              boxShadow: '0 0 10px rgba(77, 77, 255, 0.2)',
+              animation: 'pulseGlow 2s infinite ease-in-out'
             }}
             onMouseEnter={(e) => {
-              e.target.style.background = 'rgba(77, 77, 255, 0.1)'
-              e.target.style.boxShadow = '0 0 15px rgba(77, 77, 255, 0.4)'
+              e.target.style.background = '#4d4dff'
+              e.target.style.boxShadow = '0 0 50px rgba(77, 77, 255, 0.9)'
+              e.target.style.animation = 'none'
+              e.target.style.transform = 'translateY(-2.5px) scale(1.05)';
             }}
             onMouseLeave={(e) => {
-              e.target.style.background = 'transparent'
+              e.target.style.background = '#4d4dff'
               e.target.style.boxShadow = 'none'
+              e.target.style.animation = 'pulseGlow 2s infinite ease-in-out'
+              e.target.style.transform = 'translateY(0) scale(1)';
             }}
           >
             {isSitting ? "> BACK_TO_ROOM" : "> VIEW_WORK"}
@@ -236,7 +242,7 @@ function Home3D({ onExit }) {
       >
         <Suspense fallback={null}>
           <ambientLight intensity={0.35} />
-          <Environment preset="city" background={false} blur={1} environmentIntensity={0.05} />
+          <Environment preset="city" background={false} blur={1} environmentIntensity={0.2} />
           <rectAreaLight width={10} height={10} position={[0, 5, -5]} intensity={5} color="#2c2c54" lookAt={[0, 0, 0]} />
           <SpotLight position={[3, 4, 2]} angle={0.5} penumbra={0.5} intensity={2} castShadow={!isMobile} color="#e0e0ff" />
           <SpotLight position={[-2, 3, -2]} intensity={3} color="blue" angle={0.5} />
