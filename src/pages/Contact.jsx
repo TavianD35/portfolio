@@ -262,7 +262,7 @@ export default function Contact() {
             {/* email copy */}
             <div style={{ border: '1px solid #333', padding: '20px', background: '#0d0d0d' }}>
               <h3 style={{ color: '#4d4dff', marginTop: 0 }}>// Direct Contact</h3>
-              <a 
+              <button 
                 onClick={copyToClipboard}
                 style={{ 
                   display: 'flex',
@@ -273,12 +273,14 @@ export default function Contact() {
                   boxSizing: 'border-box', 
                   background: '#3131fb', 
                   color: '#000', 
+                  border: 'none',
                   padding: '12px', 
-                  textDecoration: 'none',
                   fontWeight: 'bold',
                   fontSize: '18px',
                   fontFamily: 'monospace',
-                  transition: 'all 0.2s'
+                  cursor: 'pointer', 
+                  transition: 'all 0.2s',
+                  outline: 'none'
                 }}
                 onMouseEnter={(e) => {
                   e.currentTarget.style.background = '#3131fb';
@@ -290,12 +292,12 @@ export default function Contact() {
                 }}
               >
                 {copied ? "Email Copied to Clipboard" : "Copy Email"}
-              </a>
+              </button>
             </div>
 
             {/* donwload resume button*/}
             <div style={{ border: '1px solid #333', padding: '20px', background: '#0d0d0d' }}>
-              <h3 style={{ color: '#4d4dff', marginTop: 0 }}>// Download Resume</h3>
+              <h3 style={{ color: '#4d4dff', marginTop: 0 }}>// Resume</h3>
               <a 
                 href="/your-resume-file.pdf" 
                 download="Tavian_Resume.pdf"

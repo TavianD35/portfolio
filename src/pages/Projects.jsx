@@ -2,7 +2,7 @@
 Filename: Projects.jsx
 Author: Tavian Dodd
 Date Created: 01/26/2026
-Last Updated: 02/04/2026
+Last Updated: 02/07/2026
 */}
 
 import { useState, useEffect, useRef } from 'react';
@@ -103,10 +103,67 @@ export default function Projects() {
         }}
       >
 
-        <div style={{ height: '100vh', scrollSnapAlign: 'start', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-           <h1 style={{ fontSize: '5vw', color: 'white', textAlign: 'center' }}>
-             Make a good intro
-           </h1>
+        <div style={{ height: '100vh', scrollSnapAlign: 'start', display: 'flex', justifyContent: 'flex-start', alignItems: 'center', background: '#000', paddingLeft: '15%' }}>
+          <div style={{ fontFamily: 'monospace', textAlign: 'left', position: 'relative' }}>
+            
+            {/* opening body tag */}
+            <div style={{ color: '#a600ff', fontSize: '1.8rem', marginBottom: '10px', fontStyle: 'italic', fontWeight: 'bold' }}>&lt;body&gt;</div>
+
+            <div style={{ marginLeft: '40px' }}>
+              {/* opening h1 tag */}
+              <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
+                <span style={{ color: '#3131fb', fontSize: '2.5rem', fontWeight: '900', fontStyle: 'italic', letterSpacing: '-2px' }}>&lt;h1&gt;</span>
+                <div style={{ height: '12px', width: '300px', background: 'linear-gradient(90deg, #3131fb, #00ff88)', borderRadius: '2px' }}></div>
+              </div>
+
+              {/* main title */}
+              <h1 style={{ 
+                fontSize: '8vw', 
+                color: '#00ff88',
+                margin: '20px 0', 
+                fontWeight: '900',
+                paddingLeft: '40px',
+                textShadow: '0 0 30px rgba(152, 195, 121, 0.3)',
+                lineHeight: '0.9'
+              }}>
+                "My Work"
+              </h1>
+
+              {/* closing h1 tag */}
+              <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
+                <span style={{ color: '#3131fb', fontSize: '2.5rem', fontWeight: '900', fontStyle: 'italic', letterSpacing: '-2px' }}>&lt;/h1&gt;</span>
+                <div style={{ height: '12px', width: '150px', background: 'linear-gradient(90deg, #3131fb, #00ff88)', borderRadius: '2px' }}></div>
+              </div>
+            </div>
+
+            {/* paragraph section */}
+            <div style={{ marginLeft: '40px', marginTop: '40px' }}>
+              <div style={{ color: '#4e07d3', fontSize: '1.8rem', fontWeight: 'bold', fontStyle: 'italic' }}>&lt;p&gt;</div>
+              <p style={{ 
+                color: '#acacac', 
+                fontSize: '1.8rem', 
+                maxWidth: '700px', 
+                paddingLeft: '30px',
+                borderLeft: '5px solid #4e07d3',
+                borderImageSource: 'linear-gradient(to bottom, #3131fb #8a2be2, #3131fb)',
+                borderImageSlice: 1,
+                margin: '15px 0',
+                lineHeight: '1.4',
+                fontWeight: '300'
+              }}>
+                Explore a curated collection of work featuring
+                two primary disciplines: industrial simulation
+                and interactive web development. This showcase highlights
+                a range of technical engineering alongside modern
+                software deployments.
+              </p>
+              <div style={{ color: '#4e07d3', fontSize: '1.8rem', fontWeight: 'bold', fontStyle: 'italic' }}>&lt;/p&gt;</div>
+            </div>
+
+            {/* closing body tag */}
+            <div style={{ color: '#a600ff', fontSize: '1.8rem', marginTop: '10px', fontStyle: 'italic', fontWeight: 'bold' }}>&lt;/body&gt;</div>
+
+          </div>
         </div>
 
         {/* project sections */}

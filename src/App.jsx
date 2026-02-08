@@ -207,7 +207,7 @@ function Home3D({ onExit }) {
               padding: '10px 15px', 
               background: '#4d4dff',
               color: '#000',
-              border: '1px solid #4d4dff',
+              border: '2px solid #4d4dff',
               borderRadius: '5px',
               fontFamily: 'monospace',
               fontWeight: 'bold',
